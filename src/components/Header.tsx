@@ -17,7 +17,6 @@ function Header() {
         }else{
             document.body.classList.remove("dark");
         }
-        console.log(dark);
     }, [dark]);
 
     const toggleTheme = () => {
