@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import IconAdd from '../assets/IconAdd'
-import IconFilter from '../assets/IconFilter';
-import IconSearch from '../assets/IconSearch';
+import IconAdd from '../components/icons/IconAdd'
+import IconFilter from '../components/icons/IconFilter';
+import IconSearch from '../components/icons/IconSearch';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -67,7 +67,7 @@ function Home() {
                         </div>
                     </div>
 
-                    <div className={`w-full transition-all duration-300 ${showFilter ? 'h-16 opacity-100' : 'h-0 opacity-0 overflow-hidden'}`}>
+                    <div className={`w-full transition-all duration-300 mb-3 ${showFilter ? 'h-16 opacity-100' : 'h-0 opacity-0 overflow-hidden'}`}>
                         <div className='w-full h-full flex text-gray-500 dark:text-gray-300 gap-x-10'>
                             <div className='h-full flex flex-col justify-center gap-x-1'>
                                 <span className='font-medium'>Department</span>
@@ -80,9 +80,9 @@ function Home() {
                                 <span className='font-medium'>Date Issued</span>
                                 <div className='flex items-center gap-x-2'>
                                     {/* <span className='font-medium text-sm'>From</span> */}
-                                    <DatePicker selected={filter.start} onChange={(date) => handleIssuedDate(date, 'start')} className='h-10 font-medium text-center w-32 border border-gray-300 rounded'/>
-                                    <span className='font-medium text-sm h-[1px] border-y w-3 border-gray-500'></span>
-                                    <DatePicker selected={filter.end} onChange={(date) => handleIssuedDate(date, 'end')} className='h-10 font-medium text-center w-32 border border-gray-300 rounded'/>
+                                    <DatePicker selected={filter.start} onChange={(date) => handleIssuedDate(date, 'start')} className='h-10 font-medium text-center w-32 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-500' />
+                                    <span className='font-medium text-sm h-[1px] border-y w-3 border-gray-500 dark:border-gray-300'></span>
+                                    <DatePicker selected={filter.end} onChange={(date) => handleIssuedDate(date, 'end')} className='h-10 font-medium text-center w-32 border border-gray-300 rounded dark:bg-gray-800 dark:border-gray-500' />
                                 </div>
                             </div>
                             <div className='h-full flex flex-col justify-center gap-x-1'>
@@ -101,6 +101,38 @@ function Home() {
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                {/* Table */}
+                <div className='w-full text-gray-500'>
+                    <div className='w-full'>
+                        <table className='w-full'>
+                            <thead className='border-b border-gray-500 text-sm'>
+                                <tr>
+                                    <th className='py-2 px-4 text-left'>Employee Name</th>
+                                    <th>Department</th>
+                                    <th>Branch / Site</th>
+                                    <th>Item Name</th>
+                                    <th>Item Description</th>
+                                    <th>Status</th>
+                                    {/* <th>Date of Issuance</th>
+                                    <th>Issued By</th>
+                                    <th>Return Date</th>
+                                    <th>Recieved By</th> */}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className='font-semibold cursor-pointer border-b border-gray-300'>
+                                    <td className='py-2 px-4'>John Arian</td>
+                                    <td className='py-2 px-4 text-center'>IT</td>
+                                    <td className='py-2 px-4 text-center'>Head Office</td>
+                                    <td className='py-2 px-4 text-center'>Uniform</td>
+                                    <td className='py-2 px-4 text-center'>Size: Medium</td>
+                                    <td className='py-2 px-4 text-center'>Issued</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

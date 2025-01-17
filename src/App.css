@@ -7,3 +7,36 @@
     @apply transition-colors duration-100 ease-in-out;
   }
 }
+
+.react-datepicker {
+  @apply dark:bg-gray-800 dark:!text-white; /* Tailwind classes */
+}
+
+/* .react-datepicker__month-container{
+  @apply dark:text-white;
+} */
+
+.react-datepicker__header {
+  @apply dark:bg-gray-700;
+}
+
+.react-datepicker__day-name {
+  @apply dark:text-gray-200;
+}
+
+.react-datepicker__current-month {
+  @apply dark:text-gray-200;
+}
+
+.react-datepicker__day {
+  @apply dark:text-gray-200 dark:hover:text-gray-700;
+}
+
+.react-datepicker__day--selected {
+  @apply dark:bg-gray-100 dark:text-gray-700;
+}
+
+.react-datepicker__day--keyboard-selected {
+  @apply dark:bg-gray-100 dark:text-gray-700;
+}
+
