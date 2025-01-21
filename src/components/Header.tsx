@@ -39,7 +39,7 @@ function Header() {
                 <h1 className='text-gray-500 font-bold text-xl dark:text-white tracking-wide'>Accountability System</h1>
                 <div className='h-full flex items-center gap-x-2'>
                     <button onClick={toggleTheme} className='h-full aspect-square hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center justify-center'>
-                        { dark == 'dark' ? <IconRenderer name="sun" className='text-gray-400 w-6 h-6' /> : <IconRenderer name="moon" className='text-gray-400 w-6 h-6' /> }
+                        { dark == 'dark' ? <IconRenderer name="sun" className='text-gray-400 w-6 h-6' /> : <IconRenderer name="moon" className='text-gray-500 w-6 h-6' /> }
                     </button>
                     <button className='h-full aspect-square hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center justify-center'>
                         <IconRenderer name="settings" className='dark:text-gray-400 text-gray-500 w-7 h-7' />
