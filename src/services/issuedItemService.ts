@@ -8,8 +8,9 @@ const baseURL = `${config.BASE_URL}/api/accountability-system/issued-item`;
 export const getAll = async() => {
     const query = window.location.search;
     try {
-        const collection = await axios.get(`${baseURL}${query}`);
-        return collection.data;
+        const response = await axios.get(`${baseURL}${query}`);
+        console.log(response);
+        return response.data;
     } catch (error) {
         console.log(error);
     }

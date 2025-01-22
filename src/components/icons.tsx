@@ -9,6 +9,7 @@
 
 
 import IconAdd from './icons/IconAdd';
+import IconClose from './icons/IconClose';
 import IconFilter from './icons/IconFilter';
 import IconMoon from './icons/IconMoon';
 import IconSearch from './icons/IconSearch';
@@ -18,6 +19,7 @@ import IconSun from './icons/IconSun';
 
 const icons = {
     add: IconAdd,
+    close: IconClose,
     filter: IconFilter,
     moon: IconMoon,
     search: IconSearch,

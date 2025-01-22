@@ -3,34 +3,72 @@ import icons from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
 import { getAll } from '../services/issuedItemService';
+import { useNavigate } from 'react-router-dom';
+
 
 function Home() {
+    const navigate = useNavigate();
+
     // Icon Renderer
     const IconRenderer = ({ name, className }) => {
         const Icon = icons[name];
         return Icon ? <Icon className={className} /> : null;
     }
 
+    // Type of the Object
+    type Item = {
+        id: number;
+        issued_to: string;
+        department_name: string;
+        site_name: string;
+        item_name: string;
+        description: string;
+        quantity: number;
+        status: string;
+        issued_by: string;
+        issued_date: Date;
+        received_by: string;
+        returned_date: Date;
+    };
+
     // const [showFilter, setShowFilter] = useState(false);
-    const [collection, setCollection] = useState([]);
+    const [collection, setCollection] = useState<Item[]>([]);
+    const [sort, setSort] = useState('emp-asc');
     const [search, setSearch] = useState('');
+    const [page, setPage] = useState(1);
+    const [perPage, setPerPage] = useState(5);
+
+    
+    const getCollection = async() => {
+        try {
+            const response = await getAll();
+            setPage(response.pagination.page);
+            setCollection(response.collection);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        const getCollection = async() => {
-            try {
-                const collection = await getAll();
-                setCollection(collection);
-                console.log(collection);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
+        // navigate(`/?sort=${sort}&search=${search}&page=1&perPage=${perPage}`, { replace: true })
         getCollection();
     }, [])
 
+    const handleSort = (e) => {
+        setSort(e.target.value)
+        navigate(`/?sort=${e.target.value}&search=${search}&page=1&perPage=${perPage}`, { replace: true })
+        getCollection();
+    }
+
     const handleSearch = () => {
-        console.log(search);
+        navigate(`/?sort=${sort}&search=${search}&page=1&perPage=${perPage}`, { replace: true })
+        getCollection();
+    };
+
+    const handleClearSearch = () => {
+        setSearch('');
+        navigate(`/?sort=${sort}&search=&page=1&perPage=${perPage}`, { replace: true })
+        getCollection();
     };
 
     // FILTER
@@ -74,16 +112,19 @@ function Home() {
                         <div className='flex items-center h-full gap-x-6 text-gray-500 dark:text-gray-300'>
                             <div className='h-full flex items-center gap-x-1 relative'>
                                 <IconRenderer name={'search'} className='h-5 w-5 ml-2 absolute'></IconRenderer>
-                                <input onChange={(e) => {setSearch(e.target.value)}} type="text" className='h-full rounded w-80 border border-gray-300 pl-8 dark:bg-gray-800 dark:border-gray-500' />
-                                <button onClick={handleSearch} className='absolute right-2 font-medium border border-gray-300 dark:border-gray-500 rounded px-1 tracking-tight'>Search</button>
+                                <input onChange={(e) => {setSearch(e.target.value)}} value={search} type="text" className='h-full rounded w-80 border border-gray-300 pl-8 dark:bg-gray-800 dark:border-gray-500' />
+                                <div className='absolute right-2 flex items-center gap-x-1'>
+                                    <button onClick={handleClearSearch} className='font-bold text-red-500'><IconRenderer name={'close'} className='h-5 w-5'></IconRenderer></button>
+                                    <button onClick={handleSearch} className='font-medium border border-gray-300 dark:border-gray-500 rounded px-1 tracking-tight'>Search</button>
+                                </div>
                             </div>
                             <div className='h-full flex items-center gap-x-1'>
                                 <span className='font-medium'>Sort by</span>
-                                <select name="" id="" className='font-medium border border-gray-300 rounded h-full min-w-32 px-1 dark:bg-gray-800 dark:border-gray-500 cursor-pointer'>
-                                    <option value="">Employee Name (A-Z)</option>
-                                    <option value="">Employee Name (Z-A)</option>
-                                    <option value="">Date of Issuance (Newest First)</option>
-                                    <option value="">Date of Issuance (Oldest First)</option>
+                                <select name="" id="" onChange={handleSort} className='font-medium border border-gray-300 rounded h-full min-w-32 px-1 dark:bg-gray-800 dark:border-gray-500 cursor-pointer'>
+                                    <option value="emp-asc">Employee Name (A-Z)</option>
+                                    <option value="emp-desc">Employee Name (Z-A)</option>
+                                    <option value="date-asc">Date of Issuance (Newest First)</option>
+                                    <option value="date-desc">Date of Issuance (Oldest First)</option>
                                 </select>
                             </div>
                             {/* <button onClick={showFilterToggle} className='h-full flex items-center gap-x-1 border border-gray-300 rounded px-3 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-500'>
@@ -140,34 +181,36 @@ function Home() {
                                     <th>Department</th>
                                     <th>Branch / Site</th>
                                     <th>Item Name</th>
-                                    <th>Item Description</th>
+                                    {/* <th>Item Description</th> */}
+                                    <th>Quantity</th>
                                     <th>Status</th>
                                     {/* <th>Date of Issuance</th> */}
                                     {/* <th>Issued By</th> */}
                                     {/* <th>Return Date</th> */}
                                     {/* <th>Recieved By</th> */}
-                                    <th>Action</th>
+                                    {/* <th>Action</th> */}
                                 </tr>
                             </thead>
                             <tbody>
-                                {collection.length > 0 ?
-                                    (collection.map({item, index}) => {
-                                        <tr className='font-semibold cursor-pointer border-b border-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800'>
-                                            <td className='py-2 px-4'>John Arian</td>
-                                            <td className='py-2 px-4 text-center'>IT</td>
-                                            <td className='py-2 px-4 text-center'>Head Office</td>
-                                            <td className='py-2 px-4 text-center'>Uniform</td>
-                                            <td className='py-2 px-4 text-center'>Size: Medium</td>
-                                            <td className='py-2 px-4 text-center'>Issued</td>
-                                            <td className='py-2 px-4 text-center'>EDIT | DELETE</td>
+                                {
+                                    collection.length > 0 ?
+                                        collection.map((item, index) => (
+                                            <tr key={index} className='font-semibold cursor-pointer border-b border-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800'>
+                                                <td className='py-2 px-4'>{item.issued_to}</td>
+                                                <td className='py-2 px-4 text-center'>{item.department_name}</td>
+                                                <td className='py-2 px-4 text-center'>{item.site_name}</td>
+                                                <td className='py-2 px-4 text-center'>{item.item_name}</td>
+                                                {/* <td className='py-2 px-4 text-center'>{item.description}</td> */}
+                                                <td className='py-2 px-4 text-center'>{item.quantity}</td>
+                                                <td className='py-2 px-4 text-center'>{item.status}</td>
+                                                {/* <td className='py-2 px-4 text-center'>EDIT | DELETE</td> */}
+                                            </tr>
+                                        ))
+                                    : 
+                                        <tr>
+                                            <th colSpan={7} className='py-2 px-4'>No data.</th>
                                         </tr>
-                                    })
-                                : 
-                                (
-                                <tr>
-                                    <th colSpan={7}>No data.</th>
-                                </tr>
-                                )}
+                                }
                             </tbody>
                         </table>
                     </div>
