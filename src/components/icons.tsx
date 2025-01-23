@@ -11,7 +11,11 @@
 import IconAdd from './icons/IconAdd';
 import IconClose from './icons/IconClose';
 import IconFilter from './icons/IconFilter';
+import IconFirstPage from './icons/IconFirstPage';
+import IconLastPage from './icons/IconLastPage';
 import IconMoon from './icons/IconMoon';
+import IconNext from './icons/IconNext';
+import IconPrevious from './icons/IconPrevious';
 import IconSearch from './icons/IconSearch';
 import IconSettings from './icons/IconSettings';
 import IconSort from './icons/IconSort';
@@ -26,6 +30,10 @@ const icons = {
     settings: IconSettings,
     sort: IconSort,
     sun: IconSun,
+    firstPage: IconFirstPage,
+    lastPage: IconLastPage,
+    previous: IconPrevious,
+    next: IconNext
 }
 
 export default icons;

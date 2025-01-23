@@ -33,43 +33,197 @@ function Home() {
 
     // const [showFilter, setShowFilter] = useState(false);
     const [collection, setCollection] = useState<Item[]>([]);
-    const [sort, setSort] = useState('emp-asc');
+    const [sort, setSort] = useState('date-asc');
     const [search, setSearch] = useState('');
-    const [page, setPage] = useState(1);
-    const [perPage, setPerPage] = useState(5);
+    const [page, setPage] = useState<number>(1);
+    const [pageCount, setPageCount] = useState(1);
+    const [perPage, setPerPage] = useState(25);
+    const [pageArray, setPageArray] = useState([]);
 
-    
     const getCollection = async() => {
         try {
             const response = await getAll();
+            setSearch(response.search);
+            setSort(response.sort);
             setPage(response.pagination.page);
+            setPerPage(response.pagination.perPage);
             setCollection(response.collection);
+            setPageCount(response.pagination.pageCount);
+            const pageValue = parseInt(response.pagination.page);
+            const pageCountValue = parseInt(response.pagination.pageCount);
+            if(pageCountValue < 6){
+                var pageArrayToSet = [];
+                for(var i = 1; i <= pageCountValue; i++){
+                    pageArrayToSet.push(i);
+                }
+                setPageArray(pageArrayToSet);
+            }else{
+                if(pageValue > 3 && pageCountValue > 5){
+                    if((pageCountValue-pageValue) < 2){
+                        setPageArray([
+                            (pageCountValue-4),
+                            (pageCountValue-3),
+                            (pageCountValue-2),
+                            (pageCountValue-1),
+                            pageCountValue
+                        ]);
+                    }else{
+                        setPageArray([
+                            (pageValue-2),
+                            (pageValue-1),
+                            pageValue,
+                            (pageValue+1),
+                            (pageValue+2)
+                        ]);
+                    }
+                }else{
+                    setPageArray([1,2,3,4,5]);
+                }
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
     useEffect(() => {
-        // navigate(`/?sort=${sort}&search=${search}&page=1&perPage=${perPage}`, { replace: true })
         getCollection();
-    }, [])
+    }, []);
 
     const handleSort = (e) => {
-        setSort(e.target.value)
-        navigate(`/?sort=${e.target.value}&search=${search}&page=1&perPage=${perPage}`, { replace: true })
+        setSort(e.target.value);
+        let url = `?sort=${e.target.value}`;
+        if(search != ''){
+            url += `&search=${search}`;
+        }
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
         getCollection();
     }
 
     const handleSearch = () => {
-        navigate(`/?sort=${sort}&search=${search}&page=1&perPage=${perPage}`, { replace: true })
+        let url = `?sort=${sort}&search=${search}`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
         getCollection();
     };
 
     const handleClearSearch = () => {
         setSearch('');
-        navigate(`/?sort=${sort}&search=&page=1&perPage=${perPage}`, { replace: true })
+
+        let url = `?sort=${sort}`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
         getCollection();
     };
+
+    const handlePerPage = (e) => {
+        setPerPage(e.target.value);
+        
+        let url = `?sort=${sort}`;
+        if(search != ''){
+            if(search != ''){
+                url += `&search=${search}`;
+            }
+        }
+        url += `&perPage=${e.target.value}`;
+        navigate(url, { replace: true });
+        getCollection();
+
+
+
+
+        // navigate(`/?sort=${e.target.value}&search=${search}&page=1&perPage=${e.target.value}`, { replace: true });
+        // getCollection();
+    }
+
+    const handlePageClick = (page: number) => {
+        setPage(page);
+        
+        let url = `?sort=${sort}`;
+        if(search != ''){
+            if(search != ''){
+                url += `&search=${search}`;
+            }
+        }
+        url += `&page=${page}`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
+        getCollection();
+    }
+
+    const handleFirstPage = () => {
+        setPage(1);
+        let url = `?sort=${sort}`;
+        if(search != ''){
+            if(search != ''){
+                url += `&search=${search}`;
+            }
+        }
+        url += `&page=1`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
+        getCollection();
+    }
+
+    const handleLastPage = () => {
+        setPage(pageCount);
+        let url = `?sort=${sort}`;
+        if(search != ''){
+            if(search != ''){
+                url += `&search=${search}`;
+            }
+        }
+        url += `&page=${pageCount}`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
+        getCollection();
+    }
+
+    const handlePrevious = () => {
+        const newPage = (page - 1);
+        setPage(newPage);
+        let url = `?sort=${sort}`;
+        if(search != ''){
+            if(search != ''){
+                url += `&search=${search}`;
+            }
+        }
+        url += `&page=${newPage}`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
+        getCollection();
+    }
+
+    const handleNext = () => {
+        const newPage = (parseInt(page) + 1);
+        setPage(newPage);
+        let url = `?sort=${sort}`;
+        if(search != ''){
+            if(search != ''){
+                url += `&search=${search}`;
+            }
+        }
+        url += `&page=${newPage}`;
+        if(perPage != 25){
+            url += `&perPage=${perPage}`;
+        }
+        navigate(url, { replace: true });
+        getCollection();
+    }
 
     // FILTER
     // const [startDate, setStartDate] = useState(null);
@@ -120,7 +274,7 @@ function Home() {
                             </div>
                             <div className='h-full flex items-center gap-x-1'>
                                 <span className='font-medium'>Sort by</span>
-                                <select name="" id="" onChange={handleSort} className='font-medium border border-gray-300 rounded h-full min-w-32 px-1 dark:bg-gray-800 dark:border-gray-500 cursor-pointer'>
+                                <select name="" id="" value={sort} onChange={handleSort} className='font-medium border border-gray-300 rounded h-full min-w-32 px-1 dark:bg-gray-800 dark:border-gray-500 cursor-pointer'>
                                     <option value="emp-asc">Employee Name (A-Z)</option>
                                     <option value="emp-desc">Employee Name (Z-A)</option>
                                     <option value="date-asc">Date of Issuance (Newest First)</option>
@@ -171,16 +325,16 @@ function Home() {
                     </div> */}
                 </div>
 
-                {/* Table */}
                 <div className='w-full text-gray-500 dark:text-gray-400'>
-                    <div className='w-full'>
+                    {/* Table */}
+                    <div className='w-full pb-2'>
                         <table className='w-full'>
                             <thead className='border-b border-gray-500 text-sm'>
                                 <tr>
                                     <th className='py-2 px-4 text-left'>Employee Name</th>
                                     <th>Department</th>
                                     <th>Branch / Site</th>
-                                    <th>Item Name</th>
+                                    <th>Item</th>
                                     {/* <th>Item Description</th> */}
                                     <th>Quantity</th>
                                     <th>Status</th>
@@ -213,6 +367,47 @@ function Home() {
                                 }
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* Pagination */}
+                    <div className='w-full'>
+                        <div className='w-full flex items-center justify-between py-2 font-semibold'>
+                            <div>
+                                <div className='flex items-center gap-x-3'>
+                                    <p>Items per page</p>
+                                    <select name="" id="" value={perPage} onChange={handlePerPage} className='py-2 pl-3 pr-2 border border-gray-400 rounded shadow-inner dark:bg-gray-800'>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                        <option value="250">250</option>
+                                        <option value="500">500</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <div className='flex items-center gap-x-1'>
+                                    <button disabled={page==1} onClick={handleFirstPage} className={`rounded hover:bg-blue-400 hover:text-gray-50 transition-colors duration-200 ease-in-out p-1 ${ page == 1 ? 'pointer-events-none' : '' }`}>
+                                        <IconRenderer name={'firstPage'} className={'w-[26px] h-[26px]'}></IconRenderer>
+                                    </button>
+                                    <button disabled={page==1} onClick={handlePrevious} className={`flex items-center justify-end rounded hover:bg-blue-400 hover:text-gray-100 transition-colors duration-200 ease-in-out p-1 w-8 h-8 pr-[6px] ${ page == 1 ? 'pointer-events-none' : '' }`}>
+                                        <IconRenderer name={'previous'} className={'w-4 h-4'}></IconRenderer>
+                                    </button>
+                                    {
+                                        pageArray.map((pageItem, index) => (
+                                            <button disabled={page==pageItem} onClick={() => handlePageClick(pageItem)} key={index} className={`flex items-center justify-center rounded hover:bg-blue-400 hover:text-gray-50 transition-colors duration-200 ease-in-out p-1 w-8 h-8 font-semibold ${(page == pageItem) ? 'bg-blue-400 text-gray-50' : '' }`}>
+                                                {pageItem}
+                                            </button>
+                                        ))
+                                    }
+                                    <button disabled={page==pageCount} onClick={handleNext} className={`flex items-center justify-center rounded hover:bg-blue-400 hover:text-gray-100 transition-colors duration-200 ease-in-out p-1 w-8 h-8 pl-[5px] ${ page == pageCount ? 'pointer-events-none' : '' }`}>
+                                        <IconRenderer name={'next'} className={'w-4 h-4'}></IconRenderer>
+                                    </button>
+                                    <button disabled={page==pageCount} onClick={handleLastPage} className={`rounded hover:bg-blue-400 hover:text-gray-100 transition-colors duration-200 ease-in-out p-1 ${ page == pageCount ? 'pointer-events-none' : '' }`}>
+                                        <IconRenderer name={'lastPage'} className={'w-[26px] h-[26px]'}></IconRenderer>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
