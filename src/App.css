@@ -2,11 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer base {
+.raleway-<uniquifier> {
+  font-family: "Raleway", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+@layer base {
   * {
-    @apply transition-colors duration-100 ease-linear;
+    /* @apply transition-colors duration-100 ease-linear; */
+    @apply font-[Raleway];
   }
-} */
+}
 
 .react-datepicker {
   @apply dark:bg-gray-800 dark:!text-white; /* Tailwind classes */

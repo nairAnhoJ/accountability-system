@@ -9,7 +9,6 @@ export const getAll = async() => {
     const query = window.location.search;
     try {
         const response = await axios.get(`${baseURL}${query}`);
-        console.log(response);
         return response.data;
     } catch (error) {
         console.log(error);

@@ -9,20 +9,25 @@
 
 
 import IconAdd from './icons/IconAdd';
+import IconBack from './icons/IconBack';
 import IconClose from './icons/IconClose';
+import IconDelete from './icons/IconDelete';
 import IconFilter from './icons/IconFilter';
 import IconFirstPage from './icons/IconFirstPage';
 import IconLastPage from './icons/IconLastPage';
 import IconMoon from './icons/IconMoon';
 import IconNext from './icons/IconNext';
+import IconPassword from './icons/IconPassword';
 import IconPrevious from './icons/IconPrevious';
 import IconSearch from './icons/IconSearch';
 import IconSettings from './icons/IconSettings';
 import IconSort from './icons/IconSort';
 import IconSun from './icons/IconSun';
+import IconUser from './icons/IconUser';
 
 const icons = {
     add: IconAdd,
+    back: IconBack,
     close: IconClose,
     filter: IconFilter,
     moon: IconMoon,
@@ -33,7 +38,10 @@ const icons = {
     firstPage: IconFirstPage,
     lastPage: IconLastPage,
     previous: IconPrevious,
-    next: IconNext
+    next: IconNext,
+    user: IconUser,
+    password: IconPassword,
+    delete: IconDelete
 }
 
 export default icons;

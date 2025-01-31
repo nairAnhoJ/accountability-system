@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import icons from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
 import { getAll } from '../services/issuedItemService';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Pagination from '../components/Pagination';
 
 
 function Home() {
     const navigate = useNavigate();
 
     // Icon Renderer
-    const IconRenderer = ({ name, className }) => {
-        const Icon = icons[name];
+    const IconRenderer = ({ name, className } : { name: string; className?: string }) => {
+        const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
     }
 
@@ -35,10 +36,10 @@ function Home() {
     const [collection, setCollection] = useState<Item[]>([]);
     const [sort, setSort] = useState('date-asc');
     const [search, setSearch] = useState('');
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState(1);
     const [pageCount, setPageCount] = useState(1);
     const [perPage, setPerPage] = useState(25);
-    const [pageArray, setPageArray] = useState([]);
+    const [pageArray, setPageArray] = useState<number[] >([]);
 
     const getCollection = async() => {
         try {
@@ -89,7 +90,7 @@ function Home() {
         getCollection();
     }, []);
 
-    const handleSort = (e) => {
+    const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSort(e.target.value);
         let url = `?sort=${e.target.value}`;
         if(search != ''){
@@ -122,8 +123,8 @@ function Home() {
         getCollection();
     };
 
-    const handlePerPage = (e) => {
-        setPerPage(e.target.value);
+    const handlePerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPerPage(Number(e.target.value));
         
         let url = `?sort=${sort}`;
         if(search != ''){
@@ -134,12 +135,6 @@ function Home() {
         url += `&perPage=${e.target.value}`;
         navigate(url, { replace: true });
         getCollection();
-
-
-
-
-        // navigate(`/?sort=${e.target.value}&search=${search}&page=1&perPage=${e.target.value}`, { replace: true });
-        // getCollection();
     }
 
     const handlePageClick = (page: number) => {
@@ -209,7 +204,7 @@ function Home() {
     }
 
     const handleNext = () => {
-        const newPage = (parseInt(page) + 1);
+        const newPage = Number(page) + 1;
         setPage(newPage);
         let url = `?sort=${sort}`;
         if(search != ''){
@@ -259,9 +254,10 @@ function Home() {
                 <div>
                     <div className='w-full h-10 flex items-center justify-between mb-3'>
                         <div className='h-full'>
-                            <button className='h-full bg-blue-500 px-3 text-white font-bold rounded flex items-center justify-center'>
-                                <IconRenderer name={'add'} className='w-4 h-4'></IconRenderer> Add
-                            </button>
+                            <Link to="/issued-items/add" className='h-full bg-blue-500 px-3 text-white font-bold rounded flex items-center justify-center'>
+                                {/* <IconRenderer name={'add'} className='w-4 h-4'></IconRenderer>  */}
+                                Issue Item
+                            </Link>
                         </div>
                         <div className='flex items-center h-full gap-x-6 text-gray-500 dark:text-gray-300'>
                             <div className='h-full flex items-center gap-x-1 relative'>
@@ -275,10 +271,10 @@ function Home() {
                             <div className='h-full flex items-center gap-x-1'>
                                 <span className='font-medium'>Sort by</span>
                                 <select name="" id="" value={sort} onChange={handleSort} className='font-medium border border-gray-300 rounded h-full min-w-32 px-1 dark:bg-gray-800 dark:border-gray-500 cursor-pointer'>
-                                    <option value="emp-asc">Employee Name (A-Z)</option>
-                                    <option value="emp-desc">Employee Name (Z-A)</option>
                                     <option value="date-asc">Date of Issuance (Newest First)</option>
                                     <option value="date-desc">Date of Issuance (Oldest First)</option>
+                                    <option value="emp-asc">Employee Name (A-Z)</option>
+                                    <option value="emp-desc">Employee Name (Z-A)</option>
                                 </select>
                             </div>
                             {/* <button onClick={showFilterToggle} className='h-full flex items-center gap-x-1 border border-gray-300 rounded px-3 bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-500'>
@@ -370,45 +366,19 @@ function Home() {
                     </div>
 
                     {/* Pagination */}
-                    <div className='w-full'>
-                        <div className='w-full flex items-center justify-between py-2 font-semibold'>
-                            <div>
-                                <div className='flex items-center gap-x-3'>
-                                    <p>Items per page</p>
-                                    <select name="" id="" value={perPage} onChange={handlePerPage} className='py-2 pl-3 pr-2 border border-gray-400 rounded shadow-inner dark:bg-gray-800'>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                        <option value="250">250</option>
-                                        <option value="500">500</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <div className='flex items-center gap-x-1'>
-                                    <button disabled={page==1} onClick={handleFirstPage} className={`rounded hover:bg-blue-400 hover:text-gray-50 transition-colors duration-200 ease-in-out p-1 ${ page == 1 ? 'pointer-events-none' : '' }`}>
-                                        <IconRenderer name={'firstPage'} className={'w-[26px] h-[26px]'}></IconRenderer>
-                                    </button>
-                                    <button disabled={page==1} onClick={handlePrevious} className={`flex items-center justify-end rounded hover:bg-blue-400 hover:text-gray-100 transition-colors duration-200 ease-in-out p-1 w-8 h-8 pr-[6px] ${ page == 1 ? 'pointer-events-none' : '' }`}>
-                                        <IconRenderer name={'previous'} className={'w-4 h-4'}></IconRenderer>
-                                    </button>
-                                    {
-                                        pageArray.map((pageItem, index) => (
-                                            <button disabled={page==pageItem} onClick={() => handlePageClick(pageItem)} key={index} className={`flex items-center justify-center rounded hover:bg-blue-400 hover:text-gray-50 transition-colors duration-200 ease-in-out p-1 w-8 h-8 font-semibold ${(page == pageItem) ? 'bg-blue-400 text-gray-50' : '' }`}>
-                                                {pageItem}
-                                            </button>
-                                        ))
-                                    }
-                                    <button disabled={page==pageCount} onClick={handleNext} className={`flex items-center justify-center rounded hover:bg-blue-400 hover:text-gray-100 transition-colors duration-200 ease-in-out p-1 w-8 h-8 pl-[5px] ${ page == pageCount ? 'pointer-events-none' : '' }`}>
-                                        <IconRenderer name={'next'} className={'w-4 h-4'}></IconRenderer>
-                                    </button>
-                                    <button disabled={page==pageCount} onClick={handleLastPage} className={`rounded hover:bg-blue-400 hover:text-gray-100 transition-colors duration-200 ease-in-out p-1 ${ page == pageCount ? 'pointer-events-none' : '' }`}>
-                                        <IconRenderer name={'lastPage'} className={'w-[26px] h-[26px]'}></IconRenderer>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <Pagination 
+                        page= {page}
+                        pageCount= {pageCount}
+                        perPage= {perPage}
+                        handlePerPage= {handlePerPage}
+                        handleFirstPage= {handleFirstPage}
+                        handlePrevious= {handlePrevious}
+                        handleNext= {handleNext}
+                        handleLastPage= {handleLastPage}
+                        pageArray= {pageArray}
+                        handlePageClick= {handlePageClick}
+                    ></Pagination>
+
                 </div>
             </div>
         </>

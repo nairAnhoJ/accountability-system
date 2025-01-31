@@ -7,6 +7,7 @@ function Header() {
         return Icon ? <Icon className={className} /> : null;
     }
 
+    const [show, setShow] = useState(true);
     const [dark, setDark] = useState(() => {
         if(localStorage.getItem('dark') == null){
             return 'light';
