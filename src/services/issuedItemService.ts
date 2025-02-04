@@ -14,3 +14,12 @@ export const getAll = async() => {
         console.log(error);
     }
 };
+
+export const create = async(data) => {
+    try {
+        const response = await axios.post(`${baseURL}/create`, data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
