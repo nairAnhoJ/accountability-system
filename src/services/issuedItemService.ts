@@ -18,8 +18,9 @@ export const getAll = async() => {
 export const create = async(data) => {
     try {
         const response = await axios.post(`${baseURL}/create`, data);
-        return response.data;
+        return response;
     } catch (error) {
-        console.log(error);
+        return error;
+        // console.log(error);
     }
 }

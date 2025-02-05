@@ -3,12 +3,13 @@ import icons from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
 import { getAll } from '../services/issuedItemService';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Pagination from '../components/Pagination';
 
 
 function Home() {
     const navigate = useNavigate();
+    const location = useLocation();
 
     // Icon Renderer
     const IconRenderer = ({ name, className } : { name: string; className?: string }) => {
@@ -40,6 +41,7 @@ function Home() {
     const [pageCount, setPageCount] = useState(1);
     const [perPage, setPerPage] = useState(25);
     const [pageArray, setPageArray] = useState<number[] >([]);
+    const [notif, setNotif] = useState<string[] >(location.state?.message)
 
     const getCollection = async() => {
         try {
@@ -250,13 +252,25 @@ function Home() {
     return (
         <>
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
+                {/* Notification */}
+                {
+                    (notif) && (
+                        <div className='absolute flex items-center justify-between left-1/2 -translate-x-1/2 text-white bg-green-600 pl-5 pr-3 py-3 rounded font-bold tracking-wide border border-green-900 z-[90]'>
+                            <p className='flex items-center pr-20 pt-1'>{notif}</p>
+                            <button onClick={() => setNotif('') }>
+                                <IconRenderer name='close' className='w-6 h-6'></IconRenderer>
+                            </button>
+                        </div>
+                    ) 
+                }
+
                 {/* Controls */}
                 <div>
                     <div className='w-full h-10 flex items-center justify-between mb-3'>
                         <div className='h-full'>
                             <Link to="/issued-items/add" className='h-full bg-blue-500 px-3 text-white font-bold rounded flex items-center justify-center'>
                                 {/* <IconRenderer name={'add'} className='w-4 h-4'></IconRenderer>  */}
-                                Issue Item
+                                Issue Item 
                             </Link>
                         </div>
                         <div className='flex items-center h-full gap-x-6 text-gray-500 dark:text-gray-300'>
