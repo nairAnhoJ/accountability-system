@@ -80,6 +80,12 @@ function Add() {
         }
     ]);
 
+    type ErrorsInData = {
+        index: number;
+        name: string;
+    }
+    const [errosInData, setErrorsInData] = useState<ErrorsInData[]>([]);
+
     // Add new row in data
     const handleAdd = () => {
         setData([...data,
@@ -96,21 +102,25 @@ function Add() {
     }
 
     // Data Handler
-    const handleData = (e, objIndex) => {
-        const columnName = e.target.name;
-        
-        const newData = data.map((obj, index) => {
-            if(objIndex == index){
-                return {...obj, [columnName]: e.target.value}
-            }
-            return obj;
-        })
+    const handleData = (e: React.ChangeEvent<HTMLElement>, objIndex: number) => {
+        const target = e.target;
 
-        setData(newData);
+        if(target instanceof HTMLInputElement || target instanceof HTMLSelectElement){
+            const columnName = target.name;
+            
+            const newData = data.map((obj, index) => {
+                if(objIndex == index){
+                    return {...obj, [columnName]: target.value}
+                }
+                return obj;
+            })
+    
+            setData(newData);
+        }
     }
 
     // Delete a row in the Data
-    const handleDelete = (id) => {
+    const handleDelete = (id: number) => {
         setData(
             data.filter(d =>
                 d.id != id
@@ -118,7 +128,7 @@ function Add() {
         )
     }
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const submitData = {
@@ -150,11 +160,31 @@ function Add() {
         }
 
         try {
-            const response = await create(submitData);
+            const response = await create(submitData) as { data: any; status: number; response: any };
             console.log(response);
             
             if(response.status && response.status == 400){
                 setErrors(response.response.data.errors);
+
+                const responseErrors:{path: string; msg: string;}[] = response.response.data.errors;
+
+                setErrorsInData([]);
+                responseErrors.map((err => {
+                    if(err.msg == "ErrorInData"){
+                        const match = err.path.match(/data\[(\d+)\]\.(\w+)/);
+                        if (match){
+                            const index = parseInt(match[1], 10);
+                            const name = match[2];
+                            setErrorsInData((prevErrors) => [
+                                ...prevErrors, 
+                                {
+                                    index: index,
+                                    name: name
+                                }
+                            ]);
+                        }
+                    }
+                }))
             }
             
             if(response.status && response.status == 201){
@@ -205,7 +235,11 @@ function Add() {
         getSites();
     }, [])
 
-    const [errors, setErrors] = useState([]);
+    type Errors = {
+        path: string;
+        msg: string;
+    }
+    const [errors, setErrors] = useState<Errors[]>([]);
 
     return (
         <>
@@ -244,7 +278,7 @@ function Add() {
                             </select>
                             {
                                 errors.find((err) => err.path == "item") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "item").msg }</p>
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "item")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -269,7 +303,7 @@ function Add() {
                             </select>
                             {
                                 errors.find((err) => err.path == "allDepartment") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "allDepartment").msg }</p>
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "allDepartment")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -294,7 +328,7 @@ function Add() {
                             </select>
                             {
                                 errors.find((err) => err.path == "allSite") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "allSite").msg }</p>
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "allSite")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -328,7 +362,7 @@ function Add() {
                             <input disabled={!quantityIsChecked} type="number" onChange={(e) => {setAllData({ ...allData, allQuantity: e.target.value ? Number(e.target.value) : 1 })}} value={allData.allQuantity} className='w-96 px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "allQuantity") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "allQuantity").msg }</p>
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "allQuantity")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -394,10 +428,10 @@ function Add() {
                                         {index+1}
                                     </div>
                                     <div className='text-center p-2 col-span-3'>
-                                        <input onChange={(e) => handleData(e, index)} type="text" name='name' autoComplete='off' className='text-sm h-8 w-full p-2 border border-gray-400 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                                        <input onChange={(e) => handleData(e, index)} type="text" name='name' autoComplete='off' className={`text-sm h-8 w-full p-2 border border-gray-400 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400 ${ errosInData.some((err) => err.index == index && err.name == 'name') ? 'border-red-500' : '' }`} />
                                     </div>
                                     <div className='text-center p-2 col-span-1'>
-                                        <select disabled={deptIsChecked} onChange={(e) => handleData(e, index)} name='department' className='w-full border border-gray-400 h-full px-2 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400 text-xs'>
+                                        <select disabled={deptIsChecked} onChange={(e) => handleData(e, index)} name='department' className={`w-full border border-gray-400 h-full px-2 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400 text-xs ${ errosInData.some((err) => err.index == index && err.name == 'department') ? 'border-red-500' : '' }`} >
                                             <option hidden value="">Select a department</option>
                                             {
                                                 departments.map((item, index) => (
@@ -407,7 +441,7 @@ function Add() {
                                         </select>
                                     </div>
                                     <div className='text-center p-2 col-span-1'>
-                                        <select disabled={siteIsChecked} onChange={(e) => handleData(e, index)} name='site' className='w-full border border-gray-400 h-full px-2 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400 text-xs'>
+                                        <select disabled={siteIsChecked} onChange={(e) => handleData(e, index)} name='site' className={`w-full border border-gray-400 h-full px-2 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400 text-xs ${ errosInData.some((err) => err.index == index && err.name == 'site') ? 'border-red-500' : '' }`} >
                                             <option hidden value="">Select a site</option>
                                             {
                                                 sites.map((item, index) => (
@@ -420,7 +454,7 @@ function Add() {
                                         <input type="text" disabled={descriptionIsChecked} onChange={(e) => handleData(e, index)} name='description' autoComplete='off' className='text-xs h-8 w-full p-2 border border-gray-600 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                                     </div>
                                     <div className='text-center p-2 col-span-1'>
-                                        <input disabled={quantityIsChecked} onChange={(e) => handleData(e, index)} name='quantity' autoComplete='off' value={datum.quantity} type="number" min={1} max={99} className='text-center text-sm h-8 w-full p-2 border border-gray-600 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                                        <input disabled={quantityIsChecked} onChange={(e) => handleData(e, index)} name='quantity' autoComplete='off' value={datum.quantity} type="number" className={`text-center text-sm h-8 w-full p-2 border border-gray-600 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400 ${ errosInData.some((err) => err.index == index && err.name == 'quantity') ? 'border-red-500' : '' }`} />
                                     </div>
                                     <div className='text-center p-2 col-span-2'>
                                         <input disabled={dateTimeIsChecked} type="datetime-local" onChange={(e) => handleData(e, index)} name='dateTime' value={datum.dateTime} className='text-center text-sm h-8 w-full p-2 border border-gray-600 rounded dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>

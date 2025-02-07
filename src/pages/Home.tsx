@@ -4,6 +4,7 @@ import icons from '../components/icons';
 // import 'react-datepicker/dist/react-datepicker.css';
 import { getAll } from '../services/issuedItemService';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Table from '../components/Table';
 import Pagination from '../components/Pagination';
 
 
@@ -28,9 +29,9 @@ function Home() {
         quantity: number;
         status: string;
         issued_by: string;
-        issued_date: Date;
+        issued_date: string;
         received_by: string;
-        returned_date: Date;
+        returned_date: string;
     };
 
     // const [showFilter, setShowFilter] = useState(false);
@@ -41,11 +42,25 @@ function Home() {
     const [pageCount, setPageCount] = useState(1);
     const [perPage, setPerPage] = useState(25);
     const [pageArray, setPageArray] = useState<number[] >([]);
-    const [notif, setNotif] = useState<string[] >(location.state?.message)
+    const [notif, setNotif] = useState<string >(location.state?.message)
+    
+    const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {dateStyle: 'medium', timeStyle: 'short'});
+
+    const updateDateFormat = () => {
+        setCollection((prevItem) => 
+            prevItem.map((item) => (
+                {
+                    ...item,
+                    issued_date: dateTimeFormatter.format(new Date(item.issued_date)),
+                }
+            ))
+        );
+    };
 
     const getCollection = async() => {
         try {
             const response = await getAll();
+            
             setSearch(response.search);
             setSort(response.sort);
             setPage(response.pagination.page);
@@ -83,6 +98,8 @@ function Home() {
                     setPageArray([1,2,3,4,5]);
                 }
             }
+
+            updateDateFormat();
         } catch (error) {
             console.log(error);
         }
@@ -222,6 +239,21 @@ function Home() {
         getCollection();
     }
 
+    type Columns = {
+        key: keyof Item;
+        label: string;
+        className: string;
+    }
+    const columns:Columns[] = [
+        { key: 'issued_to', label: 'Employee Name', className: 'py-2 px-4 text-left' },
+        { key: 'department_name', label: 'Department', className: 'text-center' },
+        { key: 'item_name', label: 'Item', className: 'text-center' },
+        { key: 'description', label: 'Item Description', className: 'text-center' },
+        { key: 'quantity', label: 'Quantity', className: 'text-center' },
+        { key: 'status', label: 'Status', className: 'text-center' },
+        { key: 'issued_date', label: 'Date of Issuance', className: 'text-center' },
+    ]
+
     // FILTER
     // const [startDate, setStartDate] = useState(null);
     // const [endDate, setEndDate] = useState(null);
@@ -253,16 +285,14 @@ function Home() {
         <>
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
                 {/* Notification */}
-                {
-                    (notif) && (
+                {(notif) && (
                         <div className='absolute flex items-center justify-between left-1/2 -translate-x-1/2 text-white bg-green-600 pl-5 pr-3 py-3 rounded font-bold tracking-wide border border-green-900 z-[90]'>
                             <p className='flex items-center pr-20 pt-1'>{notif}</p>
                             <button onClick={() => setNotif('') }>
                                 <IconRenderer name='close' className='w-6 h-6'></IconRenderer>
                             </button>
                         </div>
-                    ) 
-                }
+                )}
 
                 {/* Controls */}
                 <div>
@@ -270,7 +300,7 @@ function Home() {
                         <div className='h-full'>
                             <Link to="/issued-items/add" className='h-full bg-blue-500 px-3 text-white font-bold rounded flex items-center justify-center'>
                                 {/* <IconRenderer name={'add'} className='w-4 h-4'></IconRenderer>  */}
-                                Issue Item 
+                                Issue Item/s
                             </Link>
                         </div>
                         <div className='flex items-center h-full gap-x-6 text-gray-500 dark:text-gray-300'>
@@ -338,45 +368,10 @@ function Home() {
                 <div className='w-full text-gray-500 dark:text-gray-400'>
                     {/* Table */}
                     <div className='w-full pb-2'>
-                        <table className='w-full'>
-                            <thead className='border-b border-gray-500 text-sm'>
-                                <tr>
-                                    <th className='py-2 px-4 text-left'>Employee Name</th>
-                                    <th>Department</th>
-                                    <th>Branch / Site</th>
-                                    <th>Item</th>
-                                    {/* <th>Item Description</th> */}
-                                    <th>Quantity</th>
-                                    <th>Status</th>
-                                    {/* <th>Date of Issuance</th> */}
-                                    {/* <th>Issued By</th> */}
-                                    {/* <th>Return Date</th> */}
-                                    {/* <th>Recieved By</th> */}
-                                    {/* <th>Action</th> */}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    collection.length > 0 ?
-                                        collection.map((item, index) => (
-                                            <tr key={index} className='font-semibold cursor-pointer border-b border-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800'>
-                                                <td className='py-2 px-4'>{item.issued_to}</td>
-                                                <td className='py-2 px-4 text-center'>{item.department_name}</td>
-                                                <td className='py-2 px-4 text-center'>{item.site_name}</td>
-                                                <td className='py-2 px-4 text-center'>{item.item_name}</td>
-                                                {/* <td className='py-2 px-4 text-center'>{item.description}</td> */}
-                                                <td className='py-2 px-4 text-center'>{item.quantity}</td>
-                                                <td className='py-2 px-4 text-center'>{item.status}</td>
-                                                {/* <td className='py-2 px-4 text-center'>EDIT | DELETE</td> */}
-                                            </tr>
-                                        ))
-                                    : 
-                                        <tr>
-                                            <th colSpan={7} className='py-2 px-4'>No data.</th>
-                                        </tr>
-                                }
-                            </tbody>
-                        </table>
+                        <Table 
+                            columns={columns} 
+                            collection={collection}
+                        ></Table>
                     </div>
 
                     {/* Pagination */}
