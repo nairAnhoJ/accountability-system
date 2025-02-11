@@ -18,7 +18,7 @@ interface Data {
     returned_date: string;
 }
 
-const Show = ({data, showCloseButton}: {data:Data; showCloseButton: () => void;}) => {
+const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showCloseButton: () => void; updateStatusButton: (data: Data) => void;}) => {
     const IconRenderer = ({name, className}: {name: string; className?: string}) => {
         const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
@@ -104,12 +104,12 @@ const Show = ({data, showCloseButton}: {data:Data; showCloseButton: () => void;}
                     </div>
                     <div className="mt-6">
                         <h1 className="font-semibold text-sm">Remarks</h1>
-                        <p className="font-semibold text-base border rounded border-gray-400 px-2 py-1 h-[34px]">{data.remarks}asd</p>
+                        <p className="font-semibold text-base border rounded border-gray-400 px-2 py-1 h-[34px]">{data.remarks}</p>
                     </div>
                 </div>
                 {/* Footer */}
                 <div className="p-4">
-                    <button className="px-3 py-2 rounded bg-blue-500 text-white font-bold text-sm">Update Status</button>
+                    <button onClick={() => updateStatusButton(data)} className="px-3 py-2 rounded bg-blue-500 text-white font-bold text-sm">Update Status</button>
                 </div>
             </div>
         </div>

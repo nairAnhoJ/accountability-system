@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import icons from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
-import { getAll } from '../services/issuedItemService';
+import { getAll, updateStatus } from '../services/issuedItemService';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
 import Show from './issued-items/Show';
+import UpdateStatus from './issued-items/UpdateStatus'
 
 
 function Home() {
@@ -253,6 +254,48 @@ function Home() {
         setShow(false);
     }
 
+
+
+
+    // Update Status Modal
+        type UpdateStatusData = {
+            id: number;
+            status: string;
+            received_by: string;
+            returned_date: string;
+            remarks: string;
+        }
+        const [updateStatusData, setUpdateStatusId] = useState<UpdateStatusData>({
+            id: 0,
+            status: '',
+            received_by: '',
+            returned_date: '',
+            remarks: ''
+        });
+        const [showUpdateStatusModal, setShowUpdateStatusModal] = useState(false)
+        const handleShowUpdateStatus = (data: Item) => {
+            setShowUpdateStatusModal(true);
+            setUpdateStatusId({...updateStatusData, id: data.id, status: data.status, remarks: data.remarks });
+        }
+        const handleUpdateStatus = async (data: UpdateStatusData) => {
+            console.log(data);
+            try {
+                const response = await updateStatus(data.id, data);
+            } catch (error) {
+                
+            }
+        }
+        const handleCloseUpdateStatusModal = () => {
+            setShowUpdateStatusModal(false);
+        }
+    // Update Status Modal
+
+
+
+
+
+
+    // Table Columns
     type Columns = {
         key: keyof Item;
         label: string;
@@ -267,6 +310,19 @@ function Home() {
         { key: 'status', label: 'Status', className: 'text-center' },
         { key: 'issued_date', label: 'Date of Issuance', className: 'text-center' },
     ]
+    // Table Columns
+
+
+
+    // Errors
+    type Errors = {
+        path: string;
+        msg: string;
+    }
+    const [errors, setErrors] = useState<Errors[]>([]);
+    // Errors
+
+
 
     // FILTER
     // const [startDate, setStartDate] = useState(null);
@@ -297,7 +353,8 @@ function Home() {
 
     return (
         <>
-            { show && showRow && <Show data={showRow} showCloseButton={handleShowClose}></Show> }
+            { show && showRow && <Show data={showRow} showCloseButton={handleShowClose} updateStatusButton={handleShowUpdateStatus} /> }
+            { showUpdateStatusModal && updateStatusData.id != 0 && <UpdateStatus data={updateStatusData} yesUpdateStatusButton={handleUpdateStatus} updateStatusCloseButton={handleCloseUpdateStatusModal}/>}
 
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
                 {/* Notification */}
