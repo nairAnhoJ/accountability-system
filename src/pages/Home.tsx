@@ -6,6 +6,7 @@ import { getAll } from '../services/issuedItemService';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
+import Show from './issued-items/Show';
 
 
 function Home() {
@@ -28,6 +29,7 @@ function Home() {
         description: string;
         quantity: number;
         status: string;
+        remarks: string;
         issued_by: string;
         issued_date: string;
         received_by: string;
@@ -52,6 +54,7 @@ function Home() {
                 {
                     ...item,
                     issued_date: dateTimeFormatter.format(new Date(item.issued_date)),
+                    returned_date: dateTimeFormatter.format(new Date(item.returned_date)),
                 }
             ))
         );
@@ -239,6 +242,17 @@ function Home() {
         getCollection();
     }
 
+    const [show, setShow] = useState(false);
+    const [showRow, setshowRow] = useState<Item>()
+    const handleRowClick = (row: Item) => {
+        setShow(true);
+        setshowRow(row);
+    }
+
+    const handleShowClose = () => {
+        setShow(false);
+    }
+
     type Columns = {
         key: keyof Item;
         label: string;
@@ -283,6 +297,8 @@ function Home() {
 
     return (
         <>
+            { show && showRow && <Show data={showRow} showCloseButton={handleShowClose}></Show> }
+
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
                 {/* Notification */}
                 {(notif) && (
@@ -371,6 +387,7 @@ function Home() {
                         <Table 
                             columns={columns} 
                             collection={collection}
+                            onRowClick={handleRowClick}
                         ></Table>
                     </div>
 

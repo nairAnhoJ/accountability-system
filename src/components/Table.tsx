@@ -10,6 +10,7 @@ interface Collection {
     description: string;
     quantity: number;
     status: string;
+    remarks: string;
     issued_date: string;
     issued_by: string;
     returned_date: string;
@@ -19,7 +20,7 @@ interface Collection {
     site_name: string;
 }
 
-const Table = ({ columns, collection }: { columns: Columns[], collection: Collection[] }) => {
+const Table = ({ columns, collection, onRowClick }: { columns: Columns[], collection: Collection[], onRowClick: (row: Collection) => void }) => {
   return (
     <div className="w-full">
         <table className='w-full'>
@@ -36,14 +37,13 @@ const Table = ({ columns, collection }: { columns: Columns[], collection: Collec
                 {
                     collection.length > 0 ?
                         collection.map((item, index) => (
-                            <tr key={index} className="font-semibold cursor-pointer border-b border-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800">
+                            <tr key={index} onClick={() => onRowClick(item)} className="font-semibold cursor-pointer border-b border-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800">
                                 {
                                     columns.map((row, index) => (
                                         <td key={index} className={row.className}>{item[row.key]}</td>
                                     ))
                                 }
                             </tr>
-
                         ))
                     : 
                         <tr>
