@@ -88,10 +88,10 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
                         {
                             (data.received_by && data.returned_date) &&
                             <>
-                                <h1 className="font-bold text-lg mt-3">Return Details</h1>
+                                <h1 className="font-bold text-lg mt-3">{data.status === "Returned" ? "Return Details" : "Report Details"}</h1>
                                 <div className="flex items-center border-b pb-5">
                                     <div className="flex items-center w-1/2">
-                                        <h1 className="font-semibold text-sm w-1/2">Received By:</h1>
+                                        <h1 className="font-semibold text-sm w-1/2">{data.status === "Returned" ? "Received By:" : "Reported To:"}</h1>
                                         <p className="font-bold text-base">{data.received_by}</p>
                                     </div>
                                     <div className="flex items-center w-1/2">
@@ -108,8 +108,11 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
                     </div>
                 </div>
                 {/* Footer */}
-                <div className="p-4">
-                    <button onClick={() => updateStatusButton(data)} className="px-3 py-2 rounded bg-blue-500 text-white font-bold text-sm">Update Status</button>
+                <div className="p-4 flex gap-x-3">
+                    {
+                        data.status === "Issued" && <button onClick={() => updateStatusButton(data)} className="px-3 py-2 rounded bg-blue-500 text-white font-bold text-sm">Update Status</button>
+                    }
+                    <button onClick={showCloseButton} className="py-2 w-20 rounded border font-bold text-sm">Close</button>
                 </div>
             </div>
         </div>

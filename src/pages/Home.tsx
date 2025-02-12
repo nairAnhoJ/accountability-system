@@ -243,16 +243,18 @@ function Home() {
         getCollection();
     }
 
-    const [show, setShow] = useState(false);
-    const [showRow, setshowRow] = useState<Item>()
-    const handleRowClick = (row: Item) => {
-        setShow(true);
-        setshowRow(row);
-    }
 
-    const handleShowClose = () => {
-        setShow(false);
-    }
+    // Show Modal
+        const [show, setShow] = useState(false);
+        const [showRow, setshowRow] = useState<Item>()
+        const handleRowClick = (row: Item) => {
+            setShow(true);
+            setshowRow(row);
+        }
+        const handleShowClose = () => {
+            setShow(false);
+        }
+    // Show Modal
 
 
 
@@ -268,7 +270,7 @@ function Home() {
         const [updateStatusData, setUpdateStatusId] = useState<UpdateStatusData>({
             id: 0,
             status: '',
-            received_by: '',
+            received_by: 'Ako',
             returned_date: '',
             remarks: ''
         });
@@ -278,11 +280,33 @@ function Home() {
             setUpdateStatusId({...updateStatusData, id: data.id, status: data.status, remarks: data.remarks });
         }
         const handleUpdateStatus = async (data: UpdateStatusData) => {
-            console.log(data);
+            data.returned_date = data.returned_date.replace('T', ' ');
             try {
-                const response = await updateStatus(data.id, data);
+                const response = await updateStatus(data.id, data) as { data: any; status: number; response: any };
+                if(response.status == 200){
+                    const newData = response.data.data;
+                    setCollection((prevItem) => 
+                        prevItem.map((item) => (
+                            item.id === newData.id ?
+                            {
+                                ...item,
+                                status: newData.status,
+                                received_by: newData.received_by,
+                                returned_date: dateTimeFormatter.format(new Date(newData.returned_date)),
+                                remarks: newData.remarks,
+                            }
+                            :
+                            item
+                        ))
+                    );
+
+                    setNotif(response.data.message);
+                    setShowUpdateStatusModal(false);
+                    setShow(false);
+                }
+                console.log(response);
             } catch (error) {
-                
+                console.log(error);
             }
         }
         const handleCloseUpdateStatusModal = () => {

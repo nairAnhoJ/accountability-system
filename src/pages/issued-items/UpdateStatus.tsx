@@ -16,11 +16,13 @@ const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton}: { 
         return Icon ? <Icon className={className} /> : null;
     }
 
+    const currentDateTime = new Date();
+    currentDateTime.setHours(currentDateTime.getHours() + 8);
     const [statusUpdateData, setStatusUpdateData] = useState<Data>({
         id: data.id,
-        status: data.status,
-        received_by: '',
-        returned_date: '',
+        status: 'Returned',
+        received_by: 'Ako',
+        returned_date: currentDateTime.toISOString().slice(0, 16),
         remarks: data.remarks ? data.remarks : ""
     })
 
@@ -41,26 +43,25 @@ const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton}: { 
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-1">
                     <div className="mb-3">
-                        <label className="block text-sm">New Status <span className="text-red-500">*</span></label>
-                        <select onChange={(e) => setStatusUpdateData({...statusUpdateData, status: e.target.value})} className="border px-3 py-1 rounded border-gray-300">
-                            <option value="Issued">Issued</option>
+                        <label className="block text-sm">Status <span className="text-red-500">*</span></label>
+                        <select onChange={(e) => setStatusUpdateData({...statusUpdateData, status: e.target.value})} className="border text-center w-1/2 h-9 rounded border-gray-300 dark:bg-gray-100 dark:text-gray-600">
+                            {/* <option value="Issued">Issued</option> */}
                             <option value="Returned">Returned</option>
                             <option value="Lost">Lost</option>
                         </select>
                     </div>
-                    <div>
+                    {/* <div>
                         <label className="block text-sm">Received by</label>
                         <input type="text" value={statusUpdateData.received_by} onChange={(e) => setStatusUpdateData({...statusUpdateData, received_by: e.target.value})} className="w-full border px-3 py-1 rounded border-gray-300"/>
-                    </div>
-                    <div>
-                        <label className="block text-sm">Returned Date</label>
-                        <input type="text" value={statusUpdateData.returned_date} onChange={(e) => setStatusUpdateData({...statusUpdateData, returned_date: e.target.value})} className="w-full border px-3 py-1 rounded border-gray-300"/>
+                    </div> */}
+                    <div className="mb-3">
+                        <label className="block text-sm">Returned Date / Reported Date (<span className="italic">If lost</span>)</label>
+                        <input type="datetime-local" value={statusUpdateData.returned_date} onChange={(e) => setStatusUpdateData({...statusUpdateData, returned_date: e.target.value})} className="w-full border px-3 h-9 rounded border-gray-300 dark:bg-gray-100 dark:text-gray-600"/>
                     </div>
                     <div>
                         <label className="block text-sm">Remarks</label>
-                        <input type="text" value={statusUpdateData.remarks} onChange={(e) => setStatusUpdateData({...statusUpdateData, remarks: e.target.value})} className="w-full border px-3 py-1 rounded border-gray-300"/>
+                        <input type="text" value={statusUpdateData.remarks} onChange={(e) => setStatusUpdateData({...statusUpdateData, remarks: e.target.value})} className="w-full border px-3 h-9 rounded border-gray-300 dark:bg-gray-100 dark:text-gray-600"/>
                     </div>
-
                 </div>
                 {/* Footer */}
                 <div className="p-4">

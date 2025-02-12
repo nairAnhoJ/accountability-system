@@ -34,7 +34,6 @@ export const create = async(data: any) => {
 }
 
 export const updateStatus = async(id: number, data: UpdateStatusData) => {
-    console.log(data);
     try {
         const response = await axios.put(`${baseURL}/update-status/${id}`, data);
         return response;
