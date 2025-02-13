@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import icons from '../components/icons'
 
 function Header() {
-    const IconRenderer = ({ name, className }) => {
-        const Icon = icons[name];
+
+    const IconRenderer = ({ name, className } : {name: string; className: string}) => {
+        const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
     }
 
-    const [show, setShow] = useState(true);
     const [dark, setDark] = useState(() => {
         if(localStorage.getItem('dark') == null){
             return 'light';
