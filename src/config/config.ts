@@ -1,5 +1,17 @@
-const config = {
-    BASE_URL: "http://localhost:5000",
-};
+import axios from "axios";
+
+const config = axios.create({
+    baseURL: "http://localhost:5000",
+});
+
+config.interceptors.request.use((cnfg) => {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    
+    if(token){
+        cnfg.headers.Authorization = `Bearer ${token}`
+    }
+    return cnfg;
+})
 
 export default config;

@@ -25,6 +25,8 @@ import IconSort from './icons/IconSort';
 import IconSun from './icons/IconSun';
 import IconUser from './icons/IconUser';
 import IconEdit from './icons/IconEdit'
+import IconWarning from './icons/IconWarning';
+import IconLogout from './icons/IconLogout';
 
 const icons = {
     add: IconAdd,
@@ -43,7 +45,9 @@ const icons = {
     user: IconUser,
     password: IconPassword,
     delete: IconDelete,
-    edit: IconEdit
+    edit: IconEdit,
+    warning: IconWarning,
+    logout: IconLogout
 }
 
 export default icons;

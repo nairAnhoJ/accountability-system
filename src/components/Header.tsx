@@ -34,6 +34,11 @@ function Header() {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+    }
+
     return (
         <div className='w-screen h-16 bg-white dark:bg-gray-800'>
             <div className='flex items-center justify-between py-3 px-7 h-full'>
@@ -44,6 +49,9 @@ function Header() {
                     </button>
                     <button className='h-full aspect-square hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center justify-center'>
                         <IconRenderer name="settings" className='dark:text-gray-400 text-gray-500 w-7 h-7' />
+                    </button>
+                    <button onClick={handleLogout} className='h-full aspect-square hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg flex items-center justify-center'>
+                        <IconRenderer name="logout" className='dark:text-gray-400 text-gray-500 w-7 h-7' />
                     </button>
                 </div>
             </div>

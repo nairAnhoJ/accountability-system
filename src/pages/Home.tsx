@@ -11,6 +11,9 @@ import UpdateStatus from './issued-items/UpdateStatus'
 
 
 function Home() {
+    // console.log(localStorage.getItem('token'));
+    // localStorage.removeItem('token');
+    
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -335,16 +338,6 @@ function Home() {
         { key: 'issued_date', label: 'Date of Issuance', className: 'text-center' },
     ]
     // Table Columns
-
-
-
-    // Errors
-    type Errors = {
-        path: string;
-        msg: string;
-    }
-    const [errors, setErrors] = useState<Errors[]>([]);
-    // Errors
 
 
 
