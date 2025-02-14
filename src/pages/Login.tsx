@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import icons from '../components/icons'
 import { UserLogin } from '../services/authService';
 import { useNavigate } from 'react-router-dom';
@@ -45,6 +45,13 @@ function Login() {
         msg: string;
     }
     const [errors, setErrors] = useState<Errors[]>([]);
+
+    useEffect(()=>{
+        const token = localStorage.getItem("token");
+        if(token){
+            navigate('/');
+        }
+    }, [])
 
 
     return (

@@ -11,9 +11,6 @@ import UpdateStatus from './issued-items/UpdateStatus'
 
 
 function Home() {
-    // console.log(localStorage.getItem('token'));
-    // localStorage.removeItem('token');
-    
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -66,8 +63,11 @@ function Home() {
 
     const getCollection = async() => {
         try {
-            const response = await getAll();
-            
+            const response = await getAll() as {status : number; search: string; sort: string; pagination: any; collection: any;};
+            if(response.status == 403){
+                localStorage.removeItem("token");
+                window.location.href = "/login";
+            }
             setSearch(response.search);
             setSort(response.sort);
             setPage(response.pagination.page);
@@ -307,7 +307,6 @@ function Home() {
                     setShowUpdateStatusModal(false);
                     setShow(false);
                 }
-                console.log(response);
             } catch (error) {
                 console.log(error);
             }

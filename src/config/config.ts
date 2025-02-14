@@ -6,8 +6,6 @@ const config = axios.create({
 
 config.interceptors.request.use((cnfg) => {
     const token = localStorage.getItem("token");
-    console.log(token);
-    
     if(token){
         cnfg.headers.Authorization = `Bearer ${token}`
     }
