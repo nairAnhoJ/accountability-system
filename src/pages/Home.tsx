@@ -9,7 +9,6 @@ import Pagination from '../components/Pagination';
 import Show from './issued-items/Show';
 import UpdateStatus from './issued-items/UpdateStatus'
 
-
 function Home() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -279,13 +278,15 @@ function Home() {
         });
         const [showUpdateStatusModal, setShowUpdateStatusModal] = useState(false)
         const handleShowUpdateStatus = (data: Item) => {
-            setShowUpdateStatusModal(true);
+            setErrors([]);
             setUpdateStatusId({...updateStatusData, id: data.id, status: data.status, remarks: data.remarks });
+            setShowUpdateStatusModal(true);
         }
         const handleUpdateStatus = async (data: UpdateStatusData) => {
             data.returned_date = data.returned_date.replace('T', ' ');
             try {
                 const response = await updateStatus(data.id, data) as { data: any; status: number; response: any };
+                console.log(response);
                 if(response.status == 200){
                     const newData = response.data.data;
                     setCollection((prevItem) => 
@@ -306,6 +307,10 @@ function Home() {
                     setNotif(response.data.message);
                     setShowUpdateStatusModal(false);
                     setShow(false);
+                }
+
+                if(response.status == 400){
+                    setErrors(response.response.data.errors);
                 }
             } catch (error) {
                 console.log(error);
@@ -328,7 +333,7 @@ function Home() {
         className: string;
     }
     const columns:Columns[] = [
-        { key: 'issued_to', label: 'Employee Name', className: 'py-2 px-4 text-left' },
+        { key: 'issued_to', label: 'Employee Name', className: 'py-2 px-4 text-left font-semibold' },
         { key: 'department_name', label: 'Department', className: 'text-center' },
         { key: 'item_name', label: 'Item', className: 'text-center' },
         { key: 'description', label: 'Item Description', className: 'text-center' },
@@ -338,6 +343,17 @@ function Home() {
     ]
     // Table Columns
 
+
+
+
+
+    // Errors
+    type Errors = {
+        path: string;
+        msg: string;
+    }
+    const [errors, setErrors] = useState<Errors[]>([]);
+    // Errors
 
 
     // FILTER
@@ -370,17 +386,17 @@ function Home() {
     return (
         <>
             { show && showRow && <Show data={showRow} showCloseButton={handleShowClose} updateStatusButton={handleShowUpdateStatus} /> }
-            { showUpdateStatusModal && updateStatusData.id != 0 && <UpdateStatus data={updateStatusData} yesUpdateStatusButton={handleUpdateStatus} updateStatusCloseButton={handleCloseUpdateStatusModal}/>}
+            { showUpdateStatusModal && updateStatusData.id != 0 && <UpdateStatus data={updateStatusData} yesUpdateStatusButton={handleUpdateStatus} updateStatusCloseButton={handleCloseUpdateStatusModal} errors={errors}/>}
 
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
                 {/* Notification */}
                 {(notif) && (
-                        <div className='absolute flex items-center justify-between left-1/2 -translate-x-1/2 text-white bg-green-600 pl-5 pr-3 py-3 rounded font-bold tracking-wide border border-green-900 z-[90]'>
-                            <p className='flex items-center pr-20 pt-1'>{notif}</p>
-                            <button onClick={() => setNotif('') }>
-                                <IconRenderer name='close' className='w-6 h-6'></IconRenderer>
-                            </button>
-                        </div>
+                    <div className='absolute flex items-center justify-between left-1/2 -translate-x-1/2 text-white bg-green-600 pl-5 pr-3 py-3 rounded font-bold tracking-wide border border-green-900 z-[90]'>
+                        <p className='flex items-center pr-20 pt-1'>{notif}</p>
+                        <button onClick={() => setNotif('') }>
+                            <IconRenderer name='close' className='w-6 h-6'></IconRenderer>
+                        </button>
+                    </div>
                 )}
 
                 {/* Controls */}

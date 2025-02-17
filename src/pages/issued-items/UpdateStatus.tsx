@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import icons from "../../components/icons"
 
 interface Data {
@@ -9,7 +9,7 @@ interface Data {
     remarks: string;
 }
 
-const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton}: { data: Data; updateStatusCloseButton: () => void; yesUpdateStatusButton: (statusUpdateData: Data) => void; }) => {
+const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton, errors}: { data: Data; updateStatusCloseButton: () => void; yesUpdateStatusButton: (statusUpdateData: Data) => void; errors: any }) => {
 
     const IconRenderer = ({name, className}: {name: string; className?: string}) => {
         const Icon = icons[name as keyof typeof icons];
@@ -33,10 +33,6 @@ const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton}: { 
                 <div className="p-4 font-bold text-xl border-b flex items-center justify-between h-14">
                     <span>Update Status</span>
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
-                        <button><IconRenderer name="edit" className="w-5 h-5 text-blue-500" /></button>
-                        <span>|</span>
-                        <button><IconRenderer name="delete" className="w-5 h-5 text-red-500" /></button>
-                        <span>|</span>
                         <button onClick={updateStatusCloseButton}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
                 </div>
@@ -57,6 +53,11 @@ const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton}: { 
                     <div className="mb-3">
                         <label className="block text-sm">Returned Date / Reported Date (<span className="italic">If lost</span>)</label>
                         <input type="datetime-local" value={statusUpdateData.returned_date} onChange={(e) => setStatusUpdateData({...statusUpdateData, returned_date: e.target.value})} className="w-full border px-3 h-9 rounded border-gray-300 dark:bg-gray-100 dark:text-gray-600"/>
+                        {
+                            errors && errors.find((err: any) => err.path == "returned_date") ? (
+                                <p className='text-red-500'>{ errors.find((err: any) => err.path == "returned_date")?.msg }</p>
+                            ) : null
+                        }
                     </div>
                     <div>
                         <label className="block text-sm">Remarks</label>
