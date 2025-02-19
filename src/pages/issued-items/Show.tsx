@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import icons from "../../components/icons"
 
 interface Data {
@@ -27,17 +28,21 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
     return (
         <div className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center z-[99] bg-gray-900/50 text-gray-600 dark:bg-gray-500/50 dark:text-gray-300">
             <div className="bg-white dark:bg-gray-900 rounded w-[800px]">
+
+
                 {/* Header */}
                 <div className="p-4 font-bold text-xl border-b flex items-center justify-end h-14">
                     {/* <span>Details</span> */}
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
-                        <button><IconRenderer name="edit" className="w-5 h-5 text-blue-500" /></button>
+                        <Link to='/issued-items/edit' state={data}><IconRenderer name="edit" className="w-5 h-5 text-blue-500" /></Link>
                         <span>|</span>
                         <button><IconRenderer name="delete" className="w-5 h-5 text-red-500" /></button>
                         <span>|</span>
                         <button onClick={showCloseButton}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
                 </div>
+
+
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-1">
                     <h1 className="font-bold text-lg">Item Details</h1>
@@ -107,6 +112,8 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
                         <p className="font-semibold text-base border rounded border-gray-400 px-2 py-1 h-[34px]">{data.remarks}</p>
                     </div>
                 </div>
+
+
                 {/* Footer */}
                 <div className="p-4 flex gap-x-3">
                     {
@@ -114,6 +121,8 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
                     }
                     <button onClick={showCloseButton} className="py-2 w-20 rounded border font-bold text-sm">Close</button>
                 </div>
+
+
             </div>
         </div>
     )

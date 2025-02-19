@@ -54,7 +54,7 @@ function Home() {
                 {
                     ...item,
                     issued_date: dateTimeFormatter.format(new Date(item.issued_date)),
-                    returned_date: dateTimeFormatter.format(new Date(item.returned_date)),
+                    returned_date: item.returned_date && dateTimeFormatter.format(new Date(item.returned_date)),
                 }
             ))
         );
@@ -63,6 +63,7 @@ function Home() {
     const getCollection = async() => {
         try {
             const response = await getAll() as {status : number; search: string; sort: string; pagination: any; collection: any;};
+            
             if(response.status == 403){
                 localStorage.removeItem("token");
                 window.location.href = "/login";
@@ -320,6 +321,7 @@ function Home() {
             setShowUpdateStatusModal(false);
         }
     // Update Status Modal
+
 
 
 

@@ -6,6 +6,9 @@ import Header from "../components/Header";
 
 // Issued Items
 import IssuedItemsAdd from '../pages/issued-items/Add'
+import IssuedItemsEdit from '../pages/issued-items/Edit'
+
+
 import RequireAuth from "./RequireAuth";
 
 
@@ -20,6 +23,7 @@ function AppRouter() {
                 <Route element={<RequireAuth />}>
                     <Route path="/" element={<Home />}></Route>
                     <Route path="/issued-items/add" element={<IssuedItemsAdd />}></Route>
+                    <Route path="/issued-items/edit" element={<IssuedItemsEdit />}></Route>
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />}></Route>
@@ -31,7 +35,7 @@ function AppRouter() {
 const HeaderWrapper = () => {
     const token = localStorage.getItem("token");
     const path = useLocation();
-    const hideHeaderRoutes = ['/', '', '/issued-items/add'];
+    const hideHeaderRoutes = ['/', '', '/issued-items/add', '/issued-items/edit'];
 
     if(hideHeaderRoutes.includes(path.pathname) && token){
         return <Header />
