@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import icons from '../components/icons'
 import { UserLogin } from '../services/authService';
-import { useNavigate } from 'react-router-dom';
 
 function Login() {
-    const navigate = useNavigate();
-
     const IconRenderer = ({name, className}: {name: string; className?: string}) => {
         const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
@@ -25,6 +22,8 @@ function Login() {
         setErrors([]);
         try {
             const response = await UserLogin(data) as { data: any; status: number; response: any, token: string };
+            console.log(response);
+            
             if(response.status === 400){
                 setErrors(response.response.data.errors);
             }
@@ -33,7 +32,7 @@ function Login() {
             }
             if(response.status === 200){
                 localStorage.setItem("token", response.token);
-                navigate('/');
+                window.location.href = "/";
             }
         } catch (error) {
             console.log(error);
@@ -48,8 +47,9 @@ function Login() {
 
     useEffect(()=>{
         const token = localStorage.getItem("token");
+        
         if(token){
-            navigate('/');
+            window.location.href = "/";
         }
     }, [])
 

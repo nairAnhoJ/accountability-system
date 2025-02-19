@@ -1,5 +1,7 @@
 import config from "../config/config";
 
+const token = localStorage.getItem("token");
+
 interface UpdateStatusData {
     id: number;
     status: string;
@@ -12,7 +14,11 @@ const baseURL = `${config.defaults.baseURL}/api/accountability-system/issued-ite
 export const getAll = async() => {
     const query = window.location.search;
     try {
-        const response = await config.get(`${baseURL}${query}`);
+        const response = await config.get(`${baseURL}${query}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response.data;
     } catch (error) {
         return error;
@@ -21,7 +27,11 @@ export const getAll = async() => {
 
 export const create = async(data: any) => {
     try {
-        const response = await config.post(`${baseURL}/create`, data);
+        const response = await config.post(`${baseURL}/create`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response;
     } catch (error) {
         return error;
@@ -30,7 +40,11 @@ export const create = async(data: any) => {
 
 export const updateStatus = async(id: number, data: UpdateStatusData) => {
     try {
-        const response = await config.put(`${baseURL}/update-status/${id}`, data);
+        const response = await config.put(`${baseURL}/update-status/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
         return response;
     } catch (error) {
         return error;

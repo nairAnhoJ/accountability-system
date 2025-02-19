@@ -27,6 +27,7 @@ import IconUser from './icons/IconUser';
 import IconEdit from './icons/IconEdit'
 import IconWarning from './icons/IconWarning';
 import IconLogout from './icons/IconLogout';
+import IconDownArrow from './icons/IconDownArrow';
 
 const icons = {
     add: IconAdd,
@@ -47,7 +48,8 @@ const icons = {
     delete: IconDelete,
     edit: IconEdit,
     warning: IconWarning,
-    logout: IconLogout
+    logout: IconLogout,
+    downArrow: IconDownArrow
 }
 
 export default icons;

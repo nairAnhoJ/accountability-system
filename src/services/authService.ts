@@ -1,6 +1,8 @@
 import axios from "axios"
 import config from "../config/config"
 
+const token = localStorage.getItem("token");
+
 const baseURL = `${config.defaults.baseURL}/api/auth`;
 
 interface Data {
@@ -16,3 +18,16 @@ export const UserLogin = async(data: Data) => {
         return error;
     }
 };
+
+export const Me = async() => {
+    try {
+        const response = await axios.get(`${baseURL}/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+}

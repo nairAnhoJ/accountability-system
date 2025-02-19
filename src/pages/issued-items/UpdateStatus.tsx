@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import icons from "../../components/icons"
 
 interface Data {
