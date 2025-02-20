@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import icons from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
-import { getAll, updateStatus } from '../services/issuedItemService';
+import { deleteRow, getAll, updateStatus } from '../services/issuedItemService';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
 import Show from './issued-items/Show';
 import UpdateStatus from './issued-items/UpdateStatus'
+import Delete from './issued-items/Delete';
 
 function Home() {
     const navigate = useNavigate();
@@ -322,6 +323,25 @@ function Home() {
         }
     // Update Status Modal
 
+    // Delete Modal
+        const [showDeleteModal, setShowDeleteModal] = useState(false);
+        const handleShowDeleteModal = () => {
+            setShowDeleteModal(true);
+        }
+        const handleDelete = async() => {
+            try {
+                const id = showRow?.id;
+                const response = await deleteRow(id) as { data:any; };
+                setCollection((prevCollection) => prevCollection.filter(item => item.id !== id));
+                setNotif(response.data.message);
+                setShowDeleteModal(false);
+                setShow(false);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    // Delete Modal
+
 
 
 
@@ -387,8 +407,9 @@ function Home() {
 
     return (
         <>
-            { show && showRow && <Show data={showRow} showCloseButton={handleShowClose} updateStatusButton={handleShowUpdateStatus} /> }
+            { show && showRow && <Show data={showRow} showCloseButton={handleShowClose} updateStatusButton={handleShowUpdateStatus} showDeleteButton={handleShowDeleteModal}/> }
             { showUpdateStatusModal && updateStatusData.id != 0 && <UpdateStatus data={updateStatusData} yesUpdateStatusButton={handleUpdateStatus} updateStatusCloseButton={handleCloseUpdateStatusModal} errors={errors}/>}
+            { showDeleteModal && <Delete id={showRow?.id} deleteButton={handleDelete} deleteCloseButton={() => setShowDeleteModal(!showDeleteModal)} /> }
 
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
                 {/* Notification */}

@@ -19,7 +19,7 @@ interface Data {
     returned_date: string;
 }
 
-const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showCloseButton: () => void; updateStatusButton: (data: Data) => void;}) => {
+const Show = ({data, showCloseButton, updateStatusButton, showDeleteButton}: {data:Data; showCloseButton: () => void; updateStatusButton: (data: Data) => void; showDeleteButton: () => void}) => {
     const IconRenderer = ({name, className}: {name: string; className?: string}) => {
         const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
@@ -39,7 +39,7 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
                             <>
                                 <Link to='/issued-items/edit' state={data}><IconRenderer name="edit" className="w-5 h-5 text-blue-500" /></Link>
                                 <span>|</span>
-                                <button><IconRenderer name="delete" className="w-5 h-5 text-red-500" /></button>
+                                <button onClick={showDeleteButton}><IconRenderer name="delete" className="w-5 h-5 text-red-500" /></button>
                                 <span>|</span>
                             </>
                         }

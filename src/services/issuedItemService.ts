@@ -62,3 +62,17 @@ export const updateStatus = async(id: number, data: UpdateStatusData) => {
         return error;
     }
 }
+
+
+export const deleteRow = async(id?: number) => {
+    try {
+        const response = await config.patch(`${baseURL}/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
