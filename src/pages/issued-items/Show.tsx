@@ -34,10 +34,15 @@ const Show = ({data, showCloseButton, updateStatusButton}: {data:Data; showClose
                 <div className="p-4 font-bold text-xl border-b flex items-center justify-end h-14">
                     {/* <span>Details</span> */}
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
-                        <Link to='/issued-items/edit' state={data}><IconRenderer name="edit" className="w-5 h-5 text-blue-500" /></Link>
-                        <span>|</span>
-                        <button><IconRenderer name="delete" className="w-5 h-5 text-red-500" /></button>
-                        <span>|</span>
+                        {
+                            data.status === "Issued" &&
+                            <>
+                                <Link to='/issued-items/edit' state={data}><IconRenderer name="edit" className="w-5 h-5 text-blue-500" /></Link>
+                                <span>|</span>
+                                <button><IconRenderer name="delete" className="w-5 h-5 text-red-500" /></button>
+                                <span>|</span>
+                            </>
+                        }
                         <button onClick={showCloseButton}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
                 </div>

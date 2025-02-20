@@ -10,7 +10,6 @@ interface UpdateStatusData {
 
 const baseURL = `${config.defaults.baseURL}/api/accountability-system/issued-item`;
 
-
 export const getAll = async() => {
     const query = window.location.search;
     try {
@@ -37,6 +36,19 @@ export const create = async(data: any) => {
         return error;
     }
 }
+
+export const update = async(id: number, data: any) => {
+    try {
+        const response = await config.put(`${baseURL}/update/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+} 
 
 export const updateStatus = async(id: number, data: UpdateStatusData) => {
     try {
