@@ -150,8 +150,8 @@ function Home() {
         getCollection();
     };
 
-    const handlePerPage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setPerPage(Number(e.target.value));
+    const handlePerPage = (page: number) => {
+        setPerPage(page);
         
         let url = `?sort=${sort}`;
         if(search != ''){
@@ -159,7 +159,7 @@ function Home() {
                 url += `&search=${search}`;
             }
         }
-        url += `&perPage=${e.target.value}`;
+        url += `&perPage=${page}`;
         navigate(url, { replace: true });
         getCollection();
     }
@@ -409,7 +409,7 @@ function Home() {
         <>
             { show && showRow && <Show data={showRow} showCloseButton={handleShowClose} updateStatusButton={handleShowUpdateStatus} showDeleteButton={handleShowDeleteModal}/> }
             { showUpdateStatusModal && updateStatusData.id != 0 && <UpdateStatus data={updateStatusData} yesUpdateStatusButton={handleUpdateStatus} updateStatusCloseButton={handleCloseUpdateStatusModal} errors={errors}/>}
-            { showDeleteModal && <Delete id={showRow?.id} deleteButton={handleDelete} deleteCloseButton={() => setShowDeleteModal(!showDeleteModal)} /> }
+            { showDeleteModal && <Delete deleteButton={handleDelete} deleteCloseButton={() => setShowDeleteModal(!showDeleteModal)} /> }
 
             <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6'>
                 {/* Notification */}
@@ -508,13 +508,13 @@ function Home() {
                         page= {page}
                         pageCount= {pageCount}
                         perPage= {perPage}
-                        handlePerPage= {handlePerPage}
+                        handlePerPage= {() => handlePerPage(page)}
                         handleFirstPage= {handleFirstPage}
                         handlePrevious= {handlePrevious}
                         handleNext= {handleNext}
                         handleLastPage= {handleLastPage}
                         pageArray= {pageArray}
-                        handlePageClick= {handlePageClick}
+                        handlePageClick= {() => handlePageClick(page)}
                     ></Pagination>
 
                 </div>

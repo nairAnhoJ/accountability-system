@@ -1,4 +1,3 @@
-import React from 'react';
 import icons from './icons';
 
 function Pagination({
@@ -12,11 +11,22 @@ function Pagination({
     handleLastPage,
     pageArray,
     handlePageClick,
+}: {
+    page: number;
+    pageCount: number;
+    perPage: number;
+    handlePerPage: (pPage: number) => void;
+    handleFirstPage: () => void;
+    handlePrevious: () => void;
+    handleNext: () => void;
+    handleLastPage: () => void;
+    pageArray: number[];
+    handlePageClick: (page: number) => void;
 }) {
     
     // Icon Renderer
-    const IconRenderer = ({ name, className }) => {
-        const Icon = icons[name];
+    const IconRenderer = ({ name, className }: {name: string; className: string}) => {
+        const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
     }
 
@@ -27,12 +37,12 @@ function Pagination({
                     <div>
                         <div className='flex items-center gap-x-3'>
                             <p>Items per page</p>
-                            <select name="" id="" value={perPage} onChange={handlePerPage} className='py-2 pl-3 pr-2 border border-gray-400 rounded shadow-inner dark:bg-gray-800'>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="250">250</option>
-                                <option value="500">500</option>
+                            <select name="" id="" value={perPage} onChange={(e) => handlePerPage(Number(e.target.value))} className='py-2 pl-3 pr-2 border border-gray-400 rounded shadow-inner dark:bg-gray-800'>
+                                <option value={25}>25</option>
+                                <option value={50}>50</option>
+                                <option value={100}>100</option>
+                                <option value={250}>250</option>
+                                <option value={500}>500</option>
                             </select>
                         </div>
                     </div>
