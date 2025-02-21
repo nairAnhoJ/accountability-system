@@ -21,7 +21,7 @@ function Pagination({
     handleNext: () => void;
     handleLastPage: () => void;
     pageArray: number[];
-    handlePageClick: (page: number) => void;
+    handlePageClick: (pageClicked: number) => void;
 }) {
     
     // Icon Renderer
@@ -29,6 +29,7 @@ function Pagination({
         const Icon = icons[name as keyof typeof icons];
         return Icon ? <Icon className={className} /> : null;
     }
+    
 
     return (
         <>

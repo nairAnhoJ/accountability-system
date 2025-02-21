@@ -150,8 +150,8 @@ function Home() {
         getCollection();
     };
 
-    const handlePerPage = (page: number) => {
-        setPerPage(page);
+    const handlePerPage = (pPage: number) => {
+        setPerPage(pPage);
         
         let url = `?sort=${sort}`;
         if(search != ''){
@@ -159,13 +159,14 @@ function Home() {
                 url += `&search=${search}`;
             }
         }
-        url += `&perPage=${page}`;
+        url += `&perPage=${pPage}`;
         navigate(url, { replace: true });
         getCollection();
     }
 
-    const handlePageClick = (page: number) => {
-        setPage(page);
+    const handlePageClick = (pageClicked: number) => {
+        setPage(pageClicked);
+        console.log(pageClicked);
         
         let url = `?sort=${sort}`;
         if(search != ''){
@@ -173,7 +174,7 @@ function Home() {
                 url += `&search=${search}`;
             }
         }
-        url += `&page=${page}`;
+        url += `&page=${pageClicked}`;
         if(perPage != 25){
             url += `&perPage=${perPage}`;
         }
@@ -508,13 +509,13 @@ function Home() {
                         page= {page}
                         pageCount= {pageCount}
                         perPage= {perPage}
-                        handlePerPage= {() => handlePerPage(page)}
+                        handlePerPage= {(pPage) => handlePerPage(pPage)}
                         handleFirstPage= {handleFirstPage}
                         handlePrevious= {handlePrevious}
                         handleNext= {handleNext}
                         handleLastPage= {handleLastPage}
                         pageArray= {pageArray}
-                        handlePageClick= {() => handlePageClick(page)}
+                        handlePageClick= {(pageClicked) => handlePageClick(pageClicked)}
                     ></Pagination>
 
                 </div>
