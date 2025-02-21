@@ -166,7 +166,6 @@ function Home() {
 
     const handlePageClick = (pageClicked: number) => {
         setPage(pageClicked);
-        console.log(pageClicked);
         
         let url = `?sort=${sort}`;
         if(search != ''){
