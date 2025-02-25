@@ -88,4 +88,5 @@ After logging in, you will see a list of all issued items.
 - In the modal, click the **'Update Status'** button.
 - Change the item's status from **'Issued'** to either **'Returned'** or **'Lost'**.
 - Fill in the form, then click **'Update'**.
+
 ![Issued Item Update Status](docs/images/issued-item-update-status.png)
