@@ -1,8 +1,8 @@
 <div align="center">
-    <h1>Accountability System</h1>
+<h1>Accountability System</h1>
 
-    ![React](https://img.shields.io/badge/React-19.0-blue.svg)
-    ![NodeJS](https://img.shields.io/badge/NodeJS-20.12-green.svg)
+![React](https://img.shields.io/badge/React-19.0-blue.svg)
+![NodeJS](https://img.shields.io/badge/NodeJS-20.12-green.svg)
 </div>
 
 A web application for tracking company-issued items to employees. It records borrowed items, monitors their status, and logs returns to ensure accountability and proper asset management.
@@ -69,6 +69,7 @@ After logging in, you will see a list of all issued items.
 - Click the **'Issue Item/s'** button to open the issue items form.
 - Fill in the necessary details.
 - Click **'Submit'**.
+
 ![Issued Item Add Form](docs/images/issued-item-add.png)
 
 **Bulk Adding Employees:**  
@@ -79,6 +80,7 @@ After logging in, you will see a list of all issued items.
 
 #### **4. Viewing Item Details**
 - In the **Issued Items List**, click on a row to see more details.
+
 ![Issued Item More Details](docs/images/issued-item-more-details.png)
 
 
