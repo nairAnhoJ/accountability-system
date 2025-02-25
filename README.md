@@ -1,12 +1,8 @@
 <div align="center">
 <h1>Accountability System</h1>
-
-![React](https://img.shields.io/badge/React-19.0-blue.svg)
-![NodeJS](https://img.shields.io/badge/NodeJS-20.12-green.svg)
 </div>
 
 A web application for tracking company-issued items to employees. It records borrowed items, monitors their status, and logs returns to ensure accountability and proper asset management.
-
 <br/>
 
 ## Installation
