@@ -34,7 +34,7 @@ function AppRouter() {
 
                 </Route>
 
-                <Route path="*" element={<NotFoundPage />}/ >
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );
@@ -43,7 +43,7 @@ function AppRouter() {
 const HeaderWrapper = () => {
     const token = localStorage.getItem("token");
     const path = useLocation();
-    const hideHeaderRoutes = ['/', '', '/issued-items/add', '/issued-items/edit'];
+    const hideHeaderRoutes = ['/', '', '/issued-items/add', '/issued-items/edit', '/settings'];
 
     if(hideHeaderRoutes.includes(path.pathname) && token){
         return <Header />

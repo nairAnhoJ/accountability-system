@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const config = axios.create({
+    // baseURL: "",
     baseURL: "http://localhost:5000",
 });
 

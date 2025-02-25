@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import icons from '../components/icons'
 import { Me } from '../services/authService';
+import { Link } from 'react-router-dom';
 
 function Header() {
 
@@ -78,10 +79,10 @@ function Header() {
     return (
         <div className='w-screen h-16 bg-white dark:bg-gray-800'>
             <div className='flex items-center justify-between py-3 px-7 h-full'>
-                <button onClick={handleHomeButton} className='text-gray-500 font-bold text-xl dark:text-white tracking-wide'>Accountability System</button>
+                <button onClick={handleHomeButton} className='text-gray-600 font-bold text-xl dark:text-white tracking-wide'>Accountability System</button>
 
-                <button onClick={handleMenuButton} className='font-semibold text-gray-500 dark:text-white text-xl relative'>
-                    <div className='bg-gray-400 dark:bg-white w-4 h-4 rounded-full absolute right-0 bottom-0 translate-x-1/2 border-2 border-white dark:border-gray-800'>
+                <button onClick={handleMenuButton} className='font-semibold text-gray-600 dark:text-white text-xl relative'>
+                    <div className='bg-gray-500 dark:bg-white w-4 h-4 rounded-full absolute right-0 bottom-0 translate-x-1/2 border-2 border-white dark:border-gray-800'>
                         <IconRenderer name="downArrow" className='dark:text-gray-700 text-white w-[14px] h-[14px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
                     </div>
                     {me.name}
@@ -103,9 +104,9 @@ function Header() {
                                     </>
                                 }
                             </button>
-                            <button className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
+                            <Link to="/settings" className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
                                 <IconRenderer name="settings" className='w-7 h-7' /> Settings
-                            </button>
+                            </Link>
                             <button onClick={handleLogout} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium'>
                                 <IconRenderer name="logout" className='w-7 h-7' /> Logout
                             </button>

@@ -4,56 +4,99 @@ interface Columns {
     className: string;
 }
 
-interface Collection {
-    id: number;
-    issued_to: string;
-    description: string;
-    quantity: number;
-    status: string;
-    remarks: string;
-    issued_date: string;
-    issued_by: string;
-    returned_date: string;
-    received_by: string;
-    item_name: string;
-    department_name: string;
-    site_name: string;
+interface Collection<T = any> {
+    [key: string]: T;
 }
 
-const Table = ({ columns, collection, onRowClick }: { columns: Columns[], collection: Collection[], onRowClick: (row: Collection) => void }) => {
-  return (
-    <div className="w-full">
-        <table className='w-full'>
-            <thead className='border-b rounded-t-lg bg-gray-300 dark:bg-gray-700 border-gray-500 text-sm'>
-                <tr className="">
+const Table = <T extends Record<string, any>>(
+    { 
+        columns, 
+        collection, 
+        withRowClick = false,
+        onRowClick,
+        withEdit = true,
+        withDelete = true
+    }:{ 
+        columns: Columns[], 
+        collection: T[], 
+        withRowClick?: boolean,
+        onRowClick?: (row: T) => void, 
+        withEdit?: boolean, 
+        withDelete?: boolean
+    }
+) => {
+    return (
+        <div className="w-full">
+            <table className='w-full'>
+                <thead className='border-b rounded-t-lg bg-gray-300 dark:bg-gray-700 border-gray-500 text-sm'>
+                    <tr className="">
+                        {
+                            columns.map((row) => (
+                                <th key={row.key} className={row.className}>{row.label}</th>
+                            ))
+                        }
+                        {
+                            withEdit || withDelete ?
+                            <>
+                                <th className={'text-center'}>Action</th>
+                            </> 
+                            : 
+                            ''
+                        }
+                    </tr>
+                </thead>
+                <tbody>
                     {
-                        columns.map((row) => (
-                            <th key={row.key} className={row.className}>{row.label}</th>
-                        ))
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    collection.length > 0 ?
-                        collection.map((item, index) => (
-                            <tr key={index} onClick={() => onRowClick(item)} className={`font-normal cursor-pointer border-b border-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 dark:border-gray-700 ${index%2 === 1 ? 'bg-gray-200 dark:bg-gray-800' : ''}`}>
-                                {
-                                    columns.map((row, index) => (
-                                        <td key={index} className={row.className}>{item[row.key]}</td>
-                                    ))
-                                }
+                        collection.length > 0 ?
+                            collection.map((item, index) => (
+                                <tr key={index} onClick={withRowClick ? () => onRowClick?.(item) : undefined}  className={`font-normal cursor-pointer border-b border-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 dark:border-gray-700 ${index%2 === 1 ? 'bg-gray-200 dark:bg-gray-800' : ''}`}>
+                                    {
+                                        columns.map((row, index) => (
+                                            <td key={index} className={row.className}>{item[row.key]}</td>
+                                        ))
+                                    }
+                                    {
+                                        withEdit || withDelete ?
+                                        <>
+                                            <td className={'text-center font-bold'}>
+                                                {
+                                                    withEdit ? 
+                                                        <button onClick={() => editClick(item.id)} className="text-blue-500">
+                                                            EDIT
+                                                        </button>
+                                                    :
+                                                    ''
+                                                }
+                                                {
+                                                    withEdit && withDelete ? 
+                                                        <span className="mx-2">|</span>
+                                                    :
+                                                    ''
+                                                }
+                                                {
+                                                    withDelete ? 
+                                                        <button className="text-red-500">
+                                                            DELETE
+                                                        </button>
+                                                    :
+                                                    ''
+                                                }
+                                            </td>
+                                        </> 
+                                        : 
+                                        ''
+                                    }
+                                </tr>
+                            ))
+                        : 
+                            <tr>
+                                <th colSpan={7} className='py-2 px-4'>No data.</th>
                             </tr>
-                        ))
-                    : 
-                        <tr>
-                            <th colSpan={7} className='py-2 px-4'>No data.</th>
-                        </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-  )
+                    }
+                </tbody>
+            </table>
+        </div>
+    )
 }
 
 export default Table

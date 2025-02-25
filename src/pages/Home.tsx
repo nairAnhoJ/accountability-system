@@ -355,7 +355,7 @@ function Home() {
         className: string;
     }
     const columns:Columns[] = [
-        { key: 'issued_to', label: 'Employee Name', className: 'py-2 px-4 text-left font-semibold' },
+        { key: 'issued_to', label: 'Employee Name', className: 'py-2 px-4 text-left' },
         { key: 'department_name', label: 'Department', className: 'text-center' },
         { key: 'item_name', label: 'Item', className: 'text-center' },
         { key: 'description', label: 'Item Description', className: 'text-center' },
