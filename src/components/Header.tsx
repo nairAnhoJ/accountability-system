@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react'
-import icons from '../components/icons'
+import IconRenderer from './icons';
 import { Me } from '../services/authService';
 import { Link } from 'react-router-dom';
 
 function Header() {
-
-    const IconRenderer = ({ name, className } : {name: string; className: string}) => {
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null;
-    }
 
     type Me = {
         id: number;
@@ -83,6 +78,10 @@ function Header() {
 
                 <button onClick={handleMenuButton} className='font-semibold text-gray-600 dark:text-white text-xl relative'>
                     <div className='bg-gray-500 dark:bg-white w-4 h-4 rounded-full absolute right-0 bottom-0 translate-x-1/2 border-2 border-white dark:border-gray-800'>
+                        {IconRenderer({
+                            name:"downArrow",
+                            className:'dark:text-gray-700 text-white w-[14px] h-[14px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+                        }) }
                         <IconRenderer name="downArrow" className='dark:text-gray-700 text-white w-[14px] h-[14px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
                     </div>
                     {me.name}
@@ -104,7 +103,7 @@ function Header() {
                                     </>
                                 }
                             </button>
-                            <Link to="/settings" className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
+                            <Link to="/settings" onClick={() => setShowMenu(false)} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
                                 <IconRenderer name="settings" className='w-7 h-7' /> Settings
                             </Link>
                             <button onClick={handleLogout} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium'>

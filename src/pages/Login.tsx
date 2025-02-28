@@ -1,13 +1,8 @@
 import { useEffect, useState } from 'react';
-import icons from '../components/icons'
+import IconRenderer from '../components/icons';
 import { UserLogin } from '../services/authService';
 
 function Login() {
-    const IconRenderer = ({name, className}: {name: string; className?: string}) => {
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null;
-    }
-
     type Data = {
         id_number: string;
         password: string;

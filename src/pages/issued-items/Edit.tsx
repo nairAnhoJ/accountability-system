@@ -4,19 +4,12 @@ import { getAll as itemsGetAll } from '../../services/itemsService';
 import { getAll as deptGetAll } from '../../services/departmentService';
 import { getAll as siteGetAll } from '../../services/siteService';
 import { update } from '../../services/issuedItemService';
-import icons from "../../components/icons";
+import IconRenderer from "../../components/icons";
 
 const Edit = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const data = location.state;
-
-    // Icon Renderer
-    const IconRenderer = ({name, className} : { name: string; className?: string }) => {
-        if(!(name in icons)) return null;
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null
-    }
 
     // Departments Options
     type Department = {
@@ -83,7 +76,7 @@ const Edit = () => {
 
         try {
             const response = await update(data.id, newData) as {status: number; data: any; response: any};
-            console.log(response);
+            console.log(response.status);
             
             if(response.status && response.status == 400){
                 setErrors(response.response.data.errors);

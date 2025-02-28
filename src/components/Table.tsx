@@ -14,15 +14,19 @@ const Table = <T extends Record<string, any>>(
         collection, 
         withRowClick = false,
         onRowClick,
-        withEdit = true,
-        withDelete = true
+        withEdit = false,
+        editClick,
+        withDelete = false,
+        deleteClick,
     }:{ 
         columns: Columns[], 
         collection: T[], 
         withRowClick?: boolean,
         onRowClick?: (row: T) => void, 
         withEdit?: boolean, 
-        withDelete?: boolean
+        editClick?: (id: number) => void,
+        withDelete?: boolean, 
+        deleteClick?: (id: number) => void
     }
 ) => {
     return (
@@ -61,7 +65,7 @@ const Table = <T extends Record<string, any>>(
                                             <td className={'text-center font-bold'}>
                                                 {
                                                     withEdit ? 
-                                                        <button onClick={() => editClick(item.id)} className="text-blue-500">
+                                                        <button onClick={() => editClick?.(item.id)} className="text-blue-500">
                                                             EDIT
                                                         </button>
                                                     :
@@ -75,7 +79,7 @@ const Table = <T extends Record<string, any>>(
                                                 }
                                                 {
                                                     withDelete ? 
-                                                        <button className="text-red-500">
+                                                        <button onClick={() => deleteClick?.(item.id)} className="text-red-500">
                                                             DELETE
                                                         </button>
                                                     :

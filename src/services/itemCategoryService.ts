@@ -2,6 +2,9 @@ import config from "../config/config";
 
 const baseURL = `${config.defaults.baseURL}/api/accountability-system/item-categories`;
 
+interface Data {
+    name: string;
+}
 
 export const getAll = async() => {
     try {
@@ -9,5 +12,14 @@ export const getAll = async() => {
         return response.data;
     } catch (error) {
         console.log(error);
+    }
+};
+
+export const create = async(data: Data) => {
+    try {
+        const response = await config.post(`${baseURL}/create`, data);
+        return response;
+    } catch (error) {
+        return error;
     }
 };

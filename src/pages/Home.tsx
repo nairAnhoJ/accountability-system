@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import icons from '../components/icons';
+import IconRenderer from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
 import { deleteRow, getAll, updateStatus } from '../services/issuedItemService';
@@ -13,12 +13,6 @@ import Delete from './issued-items/Delete';
 function Home() {
     const navigate = useNavigate();
     const location = useLocation();
-
-    // Icon Renderer
-    const IconRenderer = ({ name, className } : { name: string; className?: string }) => {
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null;
-    }
 
     // Type of the Object
     type Item = {
@@ -65,10 +59,10 @@ function Home() {
         try {
             const response = await getAll() as {status : number; search: string; sort: string; pagination: any; collection: any;};
             
-            if(response.status == 403){
-                localStorage.removeItem("token");
-                window.location.href = "/login";
-            }
+            // if(response.status == 403){
+            //     localStorage.removeItem("token");
+            //     window.location.href = "/login";
+            // }
             setSearch(response.search);
             setSort(response.sort);
             setPage(response.pagination.page);
@@ -500,6 +494,7 @@ function Home() {
                             columns={columns} 
                             collection={collection}
                             onRowClick={handleRowClick}
+                            withRowClick={true}
                         ></Table>
                     </div>
 

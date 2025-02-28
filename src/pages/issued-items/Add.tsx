@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
-import icons from '../../components/icons'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import IconRenderer from '../../components/icons';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAll as itemsGetAll } from '../../services/itemsService';
 import { getAll as deptGetAll } from '../../services/departmentService';
 import { getAll as siteGetAll } from '../../services/siteService';
@@ -197,13 +197,6 @@ function Add() {
         } catch (error) {
             console.log(error);
         }
-    }
-
-    // Icon Renderer
-    const IconRenderer = ({name, className} : { name: string; className?: string }) => {
-        if(!(name in icons)) return null;
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null
     }
 
     useEffect(() => {

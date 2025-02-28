@@ -1,10 +1,6 @@
-import icons from "../../components/icons"
+import IconRenderer from "../../components/icons";
 
 const Delete = ({deleteCloseButton, deleteButton}: {deleteCloseButton: () => void; deleteButton: () => void;}) => {
-    const IconRenderer = ({name, className}: {name: string; className?: string}) => {
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null;
-    }
 
     return (
         <div className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center z-[99] bg-gray-900/50 text-gray-600 dark:bg-gray-500/50 dark:text-gray-300">

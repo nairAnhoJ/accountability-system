@@ -1,13 +1,3 @@
-// import { ReactComponent as IconAdd } from './icons/IconAdd';
-// import { ReactComponent as IconFilter } from './icons/IconFilter';
-// import { ReactComponent as IconMoon } from './icons/IconMoon';
-// import { ReactComponent as IconSearch } from './icons/IconSearch';
-// import { ReactComponent as IconSettings } from './icons/IconSettings';
-// import { ReactComponent as IconSort } from './icons/IconSort';
-// import { ReactComponent as IconSun } from './icons/IconSun';
-
-
-
 import IconAdd from './icons/IconAdd';
 import IconBack from './icons/IconBack';
 import IconClose from './icons/IconClose';
@@ -50,6 +40,18 @@ const icons = {
     warning: IconWarning,
     logout: IconLogout,
     downArrow: IconDownArrow
+} as const;
+
+type IconName = keyof typeof icons;
+
+interface IconRendererProps {
+    name: IconName;
+    className?: string;
 }
 
-export default icons;
+const IconRenderer = ({name, className}: IconRendererProps) => {
+    const Icon = icons[name];
+    return <Icon className={className} />;
+}
+
+export default IconRenderer;

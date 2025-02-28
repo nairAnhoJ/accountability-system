@@ -27,7 +27,12 @@ export const Me = async() => {
             },
         });
         return response.data;
-    } catch (error) {
+    } catch (error: any) {
+        if(error.status === 403){
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+        }
+        
         return error;
     }
 }
