@@ -15,6 +15,17 @@ export const getAll = async() => {
     }
 };
 
+export const getById = async(id: number) => {
+    try {
+        const response = await config.get(`${baseURL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+
+
 export const create = async(data: Data) => {
     try {
         const response = await config.post(`${baseURL}/create`, data);

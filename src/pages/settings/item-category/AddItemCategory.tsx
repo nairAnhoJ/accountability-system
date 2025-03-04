@@ -3,13 +3,11 @@ import IconRenderer from "../../../components/icons"
 import { create } from "../../../services/itemCategoryService";
 
 interface Data {
-    id: number;
     name: string;
 }
 
 const AddItemCategory = ({ onClose, onSave, showNotif } : { onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void }) => {
     const [data, setData] = useState<Data>({
-        id: 0,
         name: ''
     });
 
@@ -19,7 +17,6 @@ const AddItemCategory = ({ onClose, onSave, showNotif } : { onClose: () => void;
             const response = await create(data) as { status: number; response: any; data: any;};
             console.log(response);
             
-
             if(response.status && response.status == 400){
                 setErrors(response.response.data.errors);
             }

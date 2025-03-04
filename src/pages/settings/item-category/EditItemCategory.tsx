@@ -1,24 +1,22 @@
 import { useState } from "react"
 import IconRenderer from "../../../components/icons"
-import { create } from "../../../services/itemCategoryService";
+import { update } from "../../../services/itemCategoryService";
 
 interface Data {
     id: number;
     name: string;
 }
 
-const EditItemCategory = ({ onClose, onSave, showNotif } : { onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void }) => {
+const EditItemCategory = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void }) => {
     const [data, setData] = useState<Data>({
-        id: 0,
-        name: ''
+        id: oldData.id,
+        name: oldData.name
     });
 
     const handleUpdate = async() => {
         setErrors([]);
         try {
-            const response = await create(data) as { status: number; response: any; data: any;};
-            console.log(response);
-            
+            const response = await update(data, data.id) as { status: number; response: any; data: any;};
 
             if(response.status && response.status == 400){
                 setErrors(response.response.data.errors);
@@ -58,7 +56,7 @@ const EditItemCategory = ({ onClose, onSave, showNotif } : { onClose: () => void
                 <div className="p-4 border-b flex flex-col gap-y-1">
                     <div>
                         <label className="block">Category Name</label>
-                        <input onChange={(e) => setData({...data, name: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                        <input onChange={(e) => setData({...data, name: e.target.value})} value={data.name} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                         {
                             errors.find((err) => err.path == "name") ? (
                                 <p className='text-red-500'>{ errors.find((err) => err.path == "name")?.msg }</p>

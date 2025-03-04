@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react"
-import { getAll as itemsCategoryGetAll } from '../../services/itemCategoryService'
+import { getById, getAll as itemsCategoryGetAll } from '../../services/itemCategoryService'
 import Table from "../../components/Table"
 import AddItemCategory from "./item-category/AddItemCategory"
+import EditItemCategory from "./item-category/EditItemCategory"
 import { Notification } from "../../components/Notification"
 
 
 const Index = () => {
   const [notifIsVisible, setNotifIsVisible] = useState<boolean>(false);
   const [notifMessage, setNotifMessage] = useState<string>('');
+  const [selected, setSelected] = useState<{id:number; name:string}>({
+    id: 0,
+    name: ''
+  })
 
 
 
@@ -21,28 +26,27 @@ const Index = () => {
 
 
   // Item Category Add Modal
-  const [showAddCategoryModal, setShowAddCategoryModal] = useState<Boolean>(false);
+  const [showAddCategoryModal, setShowAddCategoryModal] = useState<boolean>(false);
   // Item Category Add Modal
 
 
 
+const getItemCategory = async() => {
+  try {
+      const response = await itemsCategoryGetAll();
+
+      if(response.status == 403){
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+      }
+
+      setItemCategory(response)
+  } catch (error) {
+      console.log(error);
+  }
+};
 
   useEffect(() => {
-    const getItemCategory = async() => {
-        try {
-            const response = await itemsCategoryGetAll();
-
-            if(response.status == 403){
-                localStorage.removeItem("token");
-                window.location.href = "/login";
-            }
-
-            setItemCategory(response)
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    
     getItemCategory();
   }, [])
 
@@ -68,14 +72,13 @@ const Index = () => {
 
 
   // After successfully added new category
-  type NewData = {
-    id: number;
-    name: string;
-  }
-  const handleAdd = (newData: NewData) => {
-    console.log(newData);
-    setItemCategory((prevCollection) => [... prevCollection, newData])
-  }
+  // type NewData = {
+  //   id: number;
+  //   name: string;
+  // }
+  // const handleAdd = (newData: NewData) => {
+  //   setItemCategory((prevCollection) => [... prevCollection, newData])
+  // }
   // After successfully added new category
 
 
@@ -85,9 +88,17 @@ const Index = () => {
 
 
 
-  const handleEdit = (id: number) => {
-    console.log(id);
+  // Item Category Add Modal
+  const [showEditCategoryModal, setShowEditCategoryModal] = useState<boolean>(false);
+  // Item Category Add Modal
+  const handleEdit = async(id: number) => {
+    const response = await getById(id);
+    setSelected(response);
+    setShowEditCategoryModal(true)
   }
+
+
+
 
   const handleDelete = (id: number) => {
     console.log(id);
@@ -107,7 +118,8 @@ const Index = () => {
 
   return (
     <>  
-      { showAddCategoryModal && <AddItemCategory onClose={() => setShowAddCategoryModal(false)} onSave={handleAdd} showNotif={handleNotif} />}
+      { showAddCategoryModal && <AddItemCategory onClose={() => setShowAddCategoryModal(false)} onSave={() => getItemCategory()} showNotif={handleNotif} />}
+      { showEditCategoryModal && <EditItemCategory oldData={selected} onClose={() => setShowEditCategoryModal(false)} onSave={() => getItemCategory()} showNotif={handleNotif} />}
       { notifIsVisible && <Notification message={notifMessage} setNotifIsVisible={setNotifIsVisible} /> }
 
       <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6 text-gray-600 dark:text-gray-100'>
