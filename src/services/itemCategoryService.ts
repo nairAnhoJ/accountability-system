@@ -23,3 +23,12 @@ export const create = async(data: Data) => {
         return error;
     }
 };
+
+export const update = async(data: Data, id: number) => {
+    try {
+        const response = await config.put(`${baseURL}/update/${id}`, data);
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
