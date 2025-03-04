@@ -24,8 +24,6 @@ export const getById = async(id: number) => {
     }
 };
 
-
-
 export const create = async(data: Data) => {
     try {
         const response = await config.post(`${baseURL}/create`, data);
@@ -38,6 +36,15 @@ export const create = async(data: Data) => {
 export const update = async(data: Data, id: number) => {
     try {
         const response = await config.put(`${baseURL}/update/${id}`, data);
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
+
+export const deleteItem = async(id: number) => {
+    try {
+        const response = await config.patch(`${baseURL}/delete/${id}`);
         return response;
     } catch (error) {
         return error;

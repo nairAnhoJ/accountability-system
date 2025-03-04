@@ -4,6 +4,7 @@ import Table from "../../components/Table"
 import AddItemCategory from "./item-category/AddItemCategory"
 import EditItemCategory from "./item-category/EditItemCategory"
 import { Notification } from "../../components/Notification"
+import DeleteItemCategory from "./item-category/DeleteItemCategory"
 
 
 const Index = () => {
@@ -88,21 +89,28 @@ const getItemCategory = async() => {
 
 
 
-  // Item Category Add Modal
-  const [showEditCategoryModal, setShowEditCategoryModal] = useState<boolean>(false);
-  // Item Category Add Modal
-  const handleEdit = async(id: number) => {
-    const response = await getById(id);
-    setSelected(response);
-    setShowEditCategoryModal(true)
-  }
+  // EDIT ITEM CATEGORY
+    const [showEditCategoryModal, setShowEditCategoryModal] = useState<boolean>(false);
+
+    const handleEdit = async(id: number) => {
+      const response = await getById(id);
+      setSelected(response);
+      setShowEditCategoryModal(true)
+    }
+  // EDIT ITEM CATEGORY
 
 
 
 
-  const handleDelete = (id: number) => {
-    console.log(id);
-  }
+  // DELETE ITEM CATEGORY
+    const [showDeleteCategoryModal, setShowDeleteCategoryModal] = useState<boolean>(false);
+
+    const handleDelete = async(id: number) => {
+      const response = await getById(id);
+      setSelected(response);
+      setShowDeleteCategoryModal(true)
+    }
+  // DELETE ITEM CATEGORY
 
 
 
@@ -120,6 +128,7 @@ const getItemCategory = async() => {
     <>  
       { showAddCategoryModal && <AddItemCategory onClose={() => setShowAddCategoryModal(false)} onSave={() => getItemCategory()} showNotif={handleNotif} />}
       { showEditCategoryModal && <EditItemCategory oldData={selected} onClose={() => setShowEditCategoryModal(false)} onSave={() => getItemCategory()} showNotif={handleNotif} />}
+      { showDeleteCategoryModal && <DeleteItemCategory oldData={selected} onClose={() => setShowDeleteCategoryModal(false)} onSave={() => getItemCategory()} showNotif={handleNotif} />}
       { notifIsVisible && <Notification message={notifMessage} setNotifIsVisible={setNotifIsVisible} /> }
 
       <div className='h-[calc(100vh-64px)] bg-gray-100 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-600 overflow-x-hidden p-6 text-gray-600 dark:text-gray-100'>
