@@ -1,6 +1,6 @@
 import { useState } from "react"
 import IconRenderer from "../../../components/icons"
-import { update } from "../../../services/itemCategoryService";
+import { update } from "../../../services/itemsService";
 
 interface Data {
     id: number;
@@ -63,7 +63,7 @@ const EditItem = ({ oldData, onClose, onSave, showNotif, itemCategoryOptions } :
                 <div className="p-4 border-b flex flex-col gap-y-3">
                     <div>
                         <label className="block">Category</label>
-                        <select onChange={(e) => {setData({...data, item_category_id: e.target.value ? Number(e.target.value) : 0})}} name='item_category_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
+                        <select onChange={(e) => {setData({...data, item_category_id: e.target.value ? Number(e.target.value) : 0})}} value={data.item_category_id} name='item_category_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
                             <option hidden value="">Select an Item</option>
                             {
                                 itemCategoryOptions.map((item, index) => (
@@ -79,7 +79,7 @@ const EditItem = ({ oldData, onClose, onSave, showNotif, itemCategoryOptions } :
                     </div>
                     <div>
                         <label className="block">Item Name</label>
-                        <input onChange={(e) => setData({...data, name: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                        <input onChange={(e) => setData({...data, name: e.target.value})} value={data.name} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                         {
                             errors.find((err) => err.path == "name") ? (
                                 <p className='text-red-500'>{ errors.find((err) => err.path == "name")?.msg }</p>
