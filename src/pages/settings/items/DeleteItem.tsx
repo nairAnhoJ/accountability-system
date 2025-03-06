@@ -1,12 +1,13 @@
 import IconRenderer from "../../../components/icons"
-import { deleteItem } from "../../../services/itemCategoryService";
+import { deleteItem } from "../../../services/itemsService";
 
 interface Data {
     id: number;
+    
     name: string;
 }
 
-const DeleteItemCategory = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; onClose: () => void; onSave: () => void; showNotif: (message: string) => void }) => {
+const DeleteItem = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; onClose: () => void; onSave: () => void; showNotif: (message: string) => void }) => {
 
     const handleDelete = async() => {
         try {
@@ -27,7 +28,7 @@ const DeleteItemCategory = ({ oldData, onClose, onSave, showNotif } : { oldData:
 
                 {/* Header */}
                 <div className="p-4 font-bold text-lg border-b flex items-center justify-between h-14">
-                    <span>DELETE ITEM CATEGORY</span>
+                    <span>DELETE ITEM</span>
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
                         <button onClick={onClose}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
@@ -36,9 +37,9 @@ const DeleteItemCategory = ({ oldData, onClose, onSave, showNotif } : { oldData:
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-1">
                     <div>
-                        <p className="mb-2">Are you sure you want to delete this item category?</p>
+                        <p className="mb-2">Are you sure you want to delete this item?</p>
                         
-                        <h1>{oldData.name}</h1>
+                        <h1 className="font-bold"><span className="text-sm font-normal">Item name: </span>{oldData.name}</h1>
                     </div>
                 </div>
 
@@ -53,4 +54,4 @@ const DeleteItemCategory = ({ oldData, onClose, onSave, showNotif } : { oldData:
     )
 }
 
-export default DeleteItemCategory
+export default DeleteItem
