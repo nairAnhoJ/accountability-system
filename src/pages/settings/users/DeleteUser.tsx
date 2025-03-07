@@ -7,7 +7,7 @@ interface Data {
     name: string;
 }
 
-const DeleteItem = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; onClose: () => void; onSave: () => void; showNotif: (message: string) => void }) => {
+const DeleteUser = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; onClose: () => void; onSave: () => void; showNotif: (message: string) => void }) => {
 
     const handleDelete = async() => {
         try {
@@ -54,4 +54,4 @@ const DeleteItem = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; o
     )
 }
 
-export default DeleteItem
+export default DeleteUser

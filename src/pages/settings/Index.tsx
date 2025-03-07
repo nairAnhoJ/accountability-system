@@ -18,6 +18,11 @@ import DeleteItem from "./items/DeleteItem"
 
 // 
 import { getAll as usersGetAll } from '../../services/usersService'
+import { getAll as departmentsGetAll } from "../../services/departmentService"
+import { getAll as sitesGetAll } from "../../services/siteService"
+import AddUser from "./users/AddUser"
+import EditUser from "./users/EditUser"
+import DeleteUser from "./users/DeleteUser"
 
 
 
@@ -222,6 +227,16 @@ const Index = () => {
 				is_active: number;
 			}
 
+			type Department = {
+				id: number;
+				name: string;
+			}
+
+			type Site = {
+				id: number;
+				name: string;
+			}
+
 			// Table Columns
 			type UsersColumns = {
 				key: keyof Users;
@@ -235,7 +250,9 @@ const Index = () => {
 		// #region ~ VARIABLEs ~
 
 			// Collection
-			const [users, setUsers] = useState<Items[]>([]);
+			const [users, setUsers] = useState<Users[]>([]);
+			const [departments, setDepartments] = useState<Department[]>([]);
+			const [sites, setSites] = useState<Site[]>([]);
 
 			// Selected Item Category for Edit and Delete
 			const [selectedUser, setSelectedUser] = useState<Items>({ id: 0, item_category_id: 0, item_category_name: '', name: '' });
@@ -261,11 +278,10 @@ const Index = () => {
 
 		// #region ~ FUNCTIONS ~ 
 
-			// Get All rows of Item Categories
+			// Get All Users
 			const getUsers = async() => {
 				try {
 					const response = await usersGetAll();
-					console.log(response);
 
 					if(response.status == 403){
 						localStorage.removeItem("token");
@@ -273,6 +289,38 @@ const Index = () => {
 					}
 
 					setUsers(response);
+				} catch (error) {
+					console.log(error);
+				}
+			};
+
+			// Get All Departments
+			const getDepartments = async() => {
+				try {
+					const response = await departmentsGetAll();
+
+					if(response.status == 403){
+						localStorage.removeItem("token");
+						window.location.href = "/login";
+					}
+
+					setDepartments(response);
+				} catch (error) {
+					console.log(error);
+				}
+			};
+
+			// Get All Sites
+			const getSites = async() => {
+				try {
+					const response = await sitesGetAll();
+
+					if(response.status == 403){
+						localStorage.removeItem("token");
+						window.location.href = "/login";
+					}
+
+					setSites(response);
 				} catch (error) {
 					console.log(error);
 				}
@@ -288,6 +336,8 @@ const Index = () => {
 		getItemCategory();
 		getItems();
 		getUsers();
+		getDepartments();
+		getSites();
 	}, [])
 
 	return (
@@ -306,6 +356,12 @@ const Index = () => {
 			{ showAddItemModal && <AddItem itemCategoryOptions={itemCategory} onClose={() => setShowAddItemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
 			{ showEditItemModal && <EditItem itemCategoryOptions={itemCategory} oldData={selectedItem} onClose={() => setShowEditItemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
 			{ showDeleteItemModal && <DeleteItem oldData={selectedItem} onClose={() => setShowDeleteitemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
+
+
+			{/* Item Category Modals */}
+			{ showAddUserModal && <AddUser departments={departments} sites={sites} onClose={() => setShowAddUserModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
+			{ showEditUserModal && <EditUser itemCategoryOptions={itemCategory} oldData={selectedItem} onClose={() => setShowEditItemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
+			{ showDeleteUserModal && <DeleteUser oldData={selectedItem} onClose={() => setShowDeleteitemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
 
 
 
@@ -343,7 +399,7 @@ const Index = () => {
 				{/* USERS */}
 					<div className="flex items-center justify-between mb-2 mt-14">
 					<h1 className="text-xl font-bold">Users</h1>
-					<button onClick={() => setShowAddItemModal(true)} className="py-2 px-3 bg-blue-500 rounded font-semibold text-sm">Add User</button>
+					<button onClick={() => setShowAddUserModal(true)} className="py-2 px-3 bg-blue-500 rounded font-semibold text-sm">Add User</button>
 					</div>
 					<div className="max-h-[400px] overflow-y-auto">
 					<Table columns={usersColumn} collection={users} withEdit={true} withDelete={true} editClick={(id) => handleEditItem(id)} deleteClick={(id) => handleDeleteItem(id)}/>

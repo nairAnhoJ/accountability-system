@@ -13,7 +13,7 @@ interface ItemCategory {
     name: string;
 }
 
-const EditItem = ({ oldData, onClose, onSave, showNotif, itemCategoryOptions } : { oldData: Data; onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void; itemCategoryOptions: ItemCategory[] }) => {
+const EditUser = ({ oldData, onClose, onSave, showNotif, itemCategoryOptions } : { oldData: Data; onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void; itemCategoryOptions: ItemCategory[] }) => {
     const [data, setData] = useState<Data>({
         id: oldData.id,
         item_category_id: oldData.item_category_id,
@@ -99,4 +99,4 @@ const EditItem = ({ oldData, onClose, onSave, showNotif, itemCategoryOptions } :
     )
 }
 
-export default EditItem
+export default EditUser

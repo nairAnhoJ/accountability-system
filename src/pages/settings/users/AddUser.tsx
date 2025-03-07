@@ -3,19 +3,32 @@ import IconRenderer from "../../../components/icons"
 import { create } from "../../../services/itemsService";
 
 interface Data {
-    item_category_id: number;
+    id_number: number;
     name: string;
+    email: string;
+    phone: number;
+    department_id: number;
+    site_id: number;
 }
 
-interface ItemCategory {
+interface Departments {
     id: number;
     name: string;
 }
 
-const AddItem = ({ onClose, onSave, showNotif, itemCategoryOptions } : { onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void; itemCategoryOptions: ItemCategory[] }) => {
+interface Sites {
+    id: number;
+    name: string;
+}
+
+const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void; departments: Departments[]; sites: Sites[] }) => {
     const [data, setData] = useState<Data>({
-        item_category_id: 0,
-        name: ''
+        id_number: 0,
+        name: '',
+        email: '',
+        phone: 0,
+        department_id: 0,
+        site_id: 0,
     });
 
 
@@ -49,11 +62,11 @@ const AddItem = ({ onClose, onSave, showNotif, itemCategoryOptions } : { onClose
 
     return (
         <div className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center z-[99] bg-gray-900/50 text-gray-600 dark:bg-gray-500/50 dark:text-gray-300">
-            <div className="bg-white dark:bg-gray-900 rounded w-[500px]">
+            <div className="bg-white dark:bg-gray-900 rounded w-[600px]">
 
                 {/* Header */}
                 <div className="p-4 font-bold text-lg border-b flex items-center justify-between h-14">
-                    <span>NEW ITEM</span>
+                    <span>NEW USER</span>
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
                         <button onClick={onClose}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
@@ -61,30 +74,96 @@ const AddItem = ({ onClose, onSave, showNotif, itemCategoryOptions } : { onClose
 
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-3">
-                    <div>
-                        <label className="block">Category</label>
-                        <select onChange={(e) => {setData({...data, item_category_id: e.target.value ? Number(e.target.value) : 0})}} name='item_category_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
-                            <option hidden value="">Select an Item</option>
+                    <div className="w-full flex items-center gap-x-3">
+                        {/* ID NUMBER */}
+                        <div className="w-2/5">
+                            <label className="block">ID Number</label>
+                            <input onChange={(e) => setData({...data, id_number: Number(e.target.value)})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
-                                itemCategoryOptions.map((item, index) => (
-                                    <option key={index} value={item.id}>{item.name}</option>
-                                ))
+                                errors.find((err) => err.path == "id_number") ? (
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
+                                ) : null
                             }
-                        </select>
-                        {
-                            errors.find((err) => err.path == "item_category_id") ? (
-                                <p className='text-red-500'>{ errors.find((err) => err.path == "item_category_id")?.msg }</p>
-                            ) : null
-                        }
+                        </div>
+                        {/* ID NUMBER */}
+
+                        {/* EMPLOYEE NAME */}
+                        <div className="w-full">
+                            <label className="block">Name</label>
+                            <input onChange={(e) => setData({...data, name: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                            {
+                                errors.find((err) => err.path == "name") ? (
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "name")?.msg }</p>
+                                ) : null
+                            }
+                        </div>
+                        {/* EMPLOYEE NAME */}
                     </div>
-                    <div>
-                        <label className="block">Item Name</label>
-                        <input onChange={(e) => setData({...data, name: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
-                        {
-                            errors.find((err) => err.path == "name") ? (
-                                <p className='text-red-500'>{ errors.find((err) => err.path == "name")?.msg }</p>
-                            ) : null
-                        }
+
+                    <div className="w-full flex items-center gap-x-3">
+                        {/* PHONE */}
+                        <div className="w-2/5">
+                            <label className="block">Phone</label>
+                            <input onChange={(e) => setData({...data, phone: Number(e.target.value)})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                            {
+                                errors.find((err) => err.path == "phone") ? (
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "phone")?.msg }</p>
+                                ) : null
+                            }
+                        </div>
+                        {/* PHONE */}
+
+                        {/* EMAIL */}
+                        <div className="w-full">
+                            <label className="block">Email</label>
+                            <input onChange={(e) => setData({...data, email: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                            {
+                                errors.find((err) => err.path == "email") ? (
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "email")?.msg }</p>
+                                ) : null
+                            }
+                        </div>
+                        {/* EMAIL */}
+                    </div>
+
+                    <div className="w-full flex items-center gap-x-3">
+                        {/* DEPARTMENT */}
+                        <div className="w-full">
+                            <label className="block">Department</label>
+                            <select onChange={(e) => {setData({...data, department_id: e.target.value ? Number(e.target.value) : 0})}} name='department_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
+                                <option hidden value="">Select an Item</option>
+                                {
+                                    departments.map((item, index) => (
+                                        <option key={index} value={item.id}>{item.name}</option>
+                                    ))
+                                }
+                            </select>
+                            {
+                                errors.find((err) => err.path == "department_id") ? (
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "department_id")?.msg }</p>
+                                ) : null
+                            }
+                        </div>
+                        {/* DEPARTMENT */}
+
+                        {/* SITE */}
+                        <div className="w-full">
+                            <label className="block">Sites</label>
+                            <select onChange={(e) => {setData({...data, site_id: e.target.value ? Number(e.target.value) : 0})}} name='site_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
+                                <option hidden value="">Select an Item</option>
+                                {
+                                    sites.map((item, index) => (
+                                        <option key={index} value={item.id}>{item.name}</option>
+                                    ))
+                                }
+                            </select>
+                            {
+                                errors.find((err) => err.path == "site_id") ? (
+                                    <p className='text-red-500'>{ errors.find((err) => err.path == "site_id")?.msg }</p>
+                                ) : null
+                            }
+                        </div>
+                        {/* SITE */}
                     </div>
                 </div>
 
@@ -99,4 +178,4 @@ const AddItem = ({ onClose, onSave, showNotif, itemCategoryOptions } : { onClose
     )
 }
 
-export default AddItem
+export default AddUser
