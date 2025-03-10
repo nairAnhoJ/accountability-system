@@ -1,9 +1,9 @@
 import { useState } from "react"
 import IconRenderer from "../../../components/icons"
-import { create } from "../../../services/itemsService";
+import { create } from "../../../services/usersService";
 
 interface Data {
-    id_number: number;
+    id_number: string;
     name: string;
     email: string;
     phone: number;
@@ -23,7 +23,7 @@ interface Sites {
 
 const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose: () => void; onSave: (data: Data) => void; showNotif: (message: string) => void; departments: Departments[]; sites: Sites[] }) => {
     const [data, setData] = useState<Data>({
-        id_number: 0,
+        id_number: '',
         name: '',
         email: '',
         phone: 0,
@@ -36,7 +36,6 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
         setErrors([]);
         try {
             const response = await create(data) as { status: number; response: any; data: any;};
-            console.log(response);
             
             if(response.status && response.status == 400){
                 setErrors(response.response.data.errors);
@@ -62,7 +61,7 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
 
     return (
         <div className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center z-[99] bg-gray-900/50 text-gray-600 dark:bg-gray-500/50 dark:text-gray-300">
-            <div className="bg-white dark:bg-gray-900 rounded w-[600px]">
+            <div className="bg-white dark:bg-gray-900 rounded w-[800px]">
 
                 {/* Header */}
                 <div className="p-4 font-bold text-lg border-b flex items-center justify-between h-14">
@@ -78,22 +77,22 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
                         {/* ID NUMBER */}
                         <div className="w-2/5">
                             <label className="block">ID Number</label>
-                            <input onChange={(e) => setData({...data, id_number: Number(e.target.value)})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                            <input onChange={(e) => setData({...data, id_number: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "id_number") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* ID NUMBER */}
 
                         {/* EMPLOYEE NAME */}
-                        <div className="w-full">
+                        <div className="w-3/5">
                             <label className="block">Name</label>
                             <input onChange={(e) => setData({...data, name: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "name") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "name")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "name")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -107,19 +106,19 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
                             <input onChange={(e) => setData({...data, phone: Number(e.target.value)})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "phone") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "phone")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "phone")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* PHONE */}
 
                         {/* EMAIL */}
-                        <div className="w-full">
+                        <div className="w-3/5">
                             <label className="block">Email</label>
                             <input onChange={(e) => setData({...data, email: e.target.value})} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "email") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "email")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "email")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -128,10 +127,10 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
 
                     <div className="w-full flex items-center gap-x-3">
                         {/* DEPARTMENT */}
-                        <div className="w-full">
+                        <div className="w-1/2">
                             <label className="block">Department</label>
                             <select onChange={(e) => {setData({...data, department_id: e.target.value ? Number(e.target.value) : 0})}} name='department_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
-                                <option hidden value="">Select an Item</option>
+                                <option hidden value="">Select an option</option>
                                 {
                                     departments.map((item, index) => (
                                         <option key={index} value={item.id}>{item.name}</option>
@@ -140,17 +139,17 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
                             </select>
                             {
                                 errors.find((err) => err.path == "department_id") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "department_id")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "department_id")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* DEPARTMENT */}
 
                         {/* SITE */}
-                        <div className="w-full">
+                        <div className="w-1/2">
                             <label className="block">Sites</label>
                             <select onChange={(e) => {setData({...data, site_id: e.target.value ? Number(e.target.value) : 0})}} name='site_id' className='w-full border border-gray-400 h-10 px-2 rounded dark:bg-gray-100 dark:text-gray-600'>
-                                <option hidden value="">Select an Item</option>
+                                <option hidden value="">Select an option</option>
                                 {
                                     sites.map((item, index) => (
                                         <option key={index} value={item.id}>{item.name}</option>
@@ -159,7 +158,7 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
                             </select>
                             {
                                 errors.find((err) => err.path == "site_id") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "site_id")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "site_id")?.msg }</p>
                                 ) : null
                             }
                         </div>

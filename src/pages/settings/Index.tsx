@@ -17,7 +17,7 @@ import EditItem from "./items/EditItem"
 import DeleteItem from "./items/DeleteItem"
 
 // 
-import { getAll as usersGetAll } from '../../services/usersService'
+import { getAll as usersGetAll, getById as getUserById } from '../../services/usersService'
 import { getAll as departmentsGetAll } from "../../services/departmentService"
 import { getAll as sitesGetAll } from "../../services/siteService"
 import AddUser from "./users/AddUser"
@@ -216,7 +216,7 @@ const Index = () => {
 
 			type Users = {
 				id: number;
-				item_category_id: number;
+				id_number: string;
 				name: string;
 				email: string;
 				phone: number;
@@ -255,7 +255,18 @@ const Index = () => {
 			const [sites, setSites] = useState<Site[]>([]);
 
 			// Selected Item Category for Edit and Delete
-			const [selectedUser, setSelectedUser] = useState<Items>({ id: 0, item_category_id: 0, item_category_name: '', name: '' });
+			const [selectedUser, setSelectedUser] = useState<Users>({
+				id: 0,
+				id_number: '',
+				name: '',
+				email: '',
+				phone: 0,
+				department_id: 0,
+				department_name: '',
+				site_id: 0,
+				site_name: '',
+				is_active: 0
+			});
 
 			// Add Modal
 			const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false);
@@ -268,9 +279,11 @@ const Index = () => {
 
 			// Table Columns
 			const usersColumn:UsersColumns[] = [
+				{  key: 'id_number',  label: 'ID Number',  className: 'py-2 px-4 text-left' },
 				{  key: 'name',  label: 'Name',  className: 'py-2 px-4 text-left' },
 				{  key: 'department_name',  label: 'Department',  className: 'py-2 px-4 text-center' },
 				{  key: 'site_name',  label: 'Site',  className: 'py-2 px-4 text-center' },
+				{  key: 'is_active',  label: 'Status',  className: 'py-2 px-4 text-center' },
 			]
 
 		// #endregion
@@ -326,6 +339,15 @@ const Index = () => {
 				}
 			};
 
+			// Handle Edit
+			const handleEditUser = async(id: number) => {
+				const response = await getUserById(id);
+				getDepartments();
+				getSites();
+				setSelectedUser(response);
+				setShowEditUserModal(true)
+			}
+
 		// #endregion
 			
 
@@ -336,8 +358,6 @@ const Index = () => {
 		getItemCategory();
 		getItems();
 		getUsers();
-		getDepartments();
-		getSites();
 	}, [])
 
 	return (
@@ -359,8 +379,8 @@ const Index = () => {
 
 
 			{/* Item Category Modals */}
-			{ showAddUserModal && <AddUser departments={departments} sites={sites} onClose={() => setShowAddUserModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
-			{ showEditUserModal && <EditUser itemCategoryOptions={itemCategory} oldData={selectedItem} onClose={() => setShowEditItemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
+			{ showAddUserModal && <AddUser departments={departments} sites={sites} onClose={() => setShowAddUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
+			{ showEditUserModal && <EditUser departments={departments} sites={sites} oldData={selectedUser} onClose={() => setShowEditUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
 			{ showDeleteUserModal && <DeleteUser oldData={selectedItem} onClose={() => setShowDeleteitemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
 
 
@@ -399,10 +419,10 @@ const Index = () => {
 				{/* USERS */}
 					<div className="flex items-center justify-between mb-2 mt-14">
 					<h1 className="text-xl font-bold">Users</h1>
-					<button onClick={() => setShowAddUserModal(true)} className="py-2 px-3 bg-blue-500 rounded font-semibold text-sm">Add User</button>
+					<button onClick={() => {setShowAddUserModal(true); getDepartments(); getSites();}} className="py-2 px-3 bg-blue-500 rounded font-semibold text-sm">Add User</button>
 					</div>
 					<div className="max-h-[400px] overflow-y-auto">
-					<Table columns={usersColumn} collection={users} withEdit={true} withDelete={true} editClick={(id) => handleEditItem(id)} deleteClick={(id) => handleDeleteItem(id)}/>
+					<Table columns={usersColumn} collection={users} withEdit={true} withDelete={true} editClick={(id) => handleEditUser(id)} deleteClick={(id) => handleDeleteItem(id)}/>
 					</div>
 				{/* USERS */}
 
