@@ -1,17 +1,24 @@
 import IconRenderer from "../../../components/icons"
-import { deleteItem } from "../../../services/itemsService";
+import { deleteUser } from "../../../services/usersService";
 
 interface Data {
     id: number;
-    
+    id_number: string;
     name: string;
+    // email: string;
+    // phone: number;
+    // department_id: number;
+    // department_name: string;
+    // site_id: number;
+    // site_name: string;
+    // is_active: number;
 }
 
-const DeleteUser = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; onClose: () => void; onSave: () => void; showNotif: (message: string) => void }) => {
+const DeleteUser = ({ currentData, onClose, onSave, showNotif } : { currentData: Data; onClose: () => void; onSave: () => void; showNotif: (message: string) => void }) => {
 
     const handleDelete = async() => {
         try {
-            const response = await deleteItem(oldData.id) as { status: number; response: any; data: any;};
+            const response = await deleteUser(currentData.id) as { status: number; response: any; data: any;};
             if(response.status && response.status == 201){
                 onSave();
                 showNotif(response.data.message);
@@ -28,7 +35,7 @@ const DeleteUser = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; o
 
                 {/* Header */}
                 <div className="p-4 font-bold text-lg border-b flex items-center justify-between h-14">
-                    <span>DELETE ITEM</span>
+                    <span>DELETE USER</span>
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
                         <button onClick={onClose}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
@@ -37,9 +44,10 @@ const DeleteUser = ({ oldData, onClose, onSave, showNotif } : { oldData: Data; o
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-1">
                     <div>
-                        <p className="mb-2">Are you sure you want to delete this item?</p>
+                        <p className="mb-2">Are you sure you want to delete this user?</p>
                         
-                        <h1 className="font-bold"><span className="text-sm font-normal">Item name: </span>{oldData.name}</h1>
+                        <h1 className="font-bold"><span className="text-sm font-normal">ID Number: </span>HII-{currentData.id_number}</h1>
+                        <h1 className="font-bold"><span className="text-sm font-normal">Name: </span>{currentData.name}</h1>
                     </div>
                 </div>
 

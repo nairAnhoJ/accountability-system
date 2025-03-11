@@ -65,7 +65,7 @@ const Table = <T extends Record<string, any>>(
                                             <td className={'text-center font-bold'}>
                                                 {
                                                     withEdit ? 
-                                                        <button onClick={() => editClick?.(item.id)} className="text-blue-500">
+                                                        <button onClick={(e) => {e.stopPropagation(); editClick?.(item.id); }} className="text-blue-500">
                                                             EDIT
                                                         </button>
                                                     :
@@ -79,7 +79,7 @@ const Table = <T extends Record<string, any>>(
                                                 }
                                                 {
                                                     withDelete ? 
-                                                        <button onClick={() => deleteClick?.(item.id)} className="text-red-500">
+                                                        <button onClick={(e) => {e.stopPropagation(); deleteClick?.(item.id); }} className="text-red-500">
                                                             DELETE
                                                         </button>
                                                     :

@@ -66,3 +66,16 @@ export const update = async(data: Data, id: number) => {
         return error;
     }
 };
+
+export const deleteUser = async(id: number) => {
+    try {
+        const response = await config.patch(`${baseURL}/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+};

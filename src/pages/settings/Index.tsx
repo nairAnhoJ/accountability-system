@@ -361,6 +361,7 @@ const Index = () => {
 			// Handle Edit
 			const handleDeleteUser = async(id: number) => {
 				const response = await getUserById(id);
+				
 				setSelectedUser(response);
 				setShowDeleteUserModal(true)
 			}
@@ -401,7 +402,7 @@ const Index = () => {
 			{ showUserModal && <ShowUser onClose={() => setShowUserModal(false)} data={selectedUser} />}
 			{ showAddUserModal && <AddUser departments={departments} sites={sites} onClose={() => setShowAddUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
 			{ showEditUserModal && <EditUser departments={departments} sites={sites} oldData={selectedUser} onClose={() => setShowEditUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
-			{ showDeleteUserModal && <DeleteUser oldData={selectedItem} onClose={() => setShowDeleteitemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
+			{ showDeleteUserModal && <DeleteUser currentData={selectedUser} onClose={() => setShowDeleteUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
 
 
 
