@@ -22,7 +22,7 @@ const Table = <T extends Record<string, any>>(
         columns: Columns[], 
         collection: T[], 
         withRowClick?: boolean,
-        onRowClick?: (row: T) => void, 
+        onRowClick?: (id: number) => void, 
         withEdit?: boolean, 
         editClick?: (id: number) => void,
         withDelete?: boolean, 
@@ -53,7 +53,7 @@ const Table = <T extends Record<string, any>>(
                     {
                         collection.length > 0 ?
                             collection.map((item, index) => (
-                                <tr key={index} onClick={withRowClick ? () => onRowClick?.(item) : undefined}  className={`font-normal cursor-pointer border-b border-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 dark:border-gray-700 ${index%2 === 1 ? 'bg-gray-200 dark:bg-gray-800' : ''}`}>
+                                <tr key={index} onClick={withRowClick ? () => onRowClick?.(item.id) : undefined}  className={`font-normal cursor-pointer border-b border-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 dark:border-gray-700 ${index%2 === 1 ? 'bg-gray-200 dark:bg-gray-800' : ''}`}>
                                     {
                                         columns.map((row, index) => (
                                             <td key={index} className={row.className}>{item[row.key]}</td>

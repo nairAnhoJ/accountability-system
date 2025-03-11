@@ -20,6 +20,7 @@ import DeleteItem from "./items/DeleteItem"
 import { getAll as usersGetAll, getById as getUserById } from '../../services/usersService'
 import { getAll as departmentsGetAll } from "../../services/departmentService"
 import { getAll as sitesGetAll } from "../../services/siteService"
+import ShowUser from "./users/ShowUser"
 import AddUser from "./users/AddUser"
 import EditUser from "./users/EditUser"
 import DeleteUser from "./users/DeleteUser"
@@ -268,6 +269,9 @@ const Index = () => {
 				is_active: 0
 			});
 
+			// Show Modal
+			const [showUserModal, setShowUserModal] = useState<boolean>(false);
+
 			// Add Modal
 			const [showAddUserModal, setShowAddUserModal] = useState<boolean>(false);
 
@@ -339,6 +343,12 @@ const Index = () => {
 				}
 			};
 
+			const userRowClick = async (id: number) => {
+				const response = await getUserById(id);
+				setSelectedUser(response);
+				setShowUserModal(true);
+			}
+
 			// Handle Edit
 			const handleEditUser = async(id: number) => {
 				const response = await getUserById(id);
@@ -347,6 +357,15 @@ const Index = () => {
 				setSelectedUser(response);
 				setShowEditUserModal(true)
 			}
+
+			// Handle Edit
+			const handleDeleteUser = async(id: number) => {
+				const response = await getUserById(id);
+				setSelectedUser(response);
+				setShowDeleteUserModal(true)
+			}
+
+
 
 		// #endregion
 			
@@ -378,7 +397,8 @@ const Index = () => {
 			{ showDeleteItemModal && <DeleteItem oldData={selectedItem} onClose={() => setShowDeleteitemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
 
 
-			{/* Item Category Modals */}
+			{/* User Modals */}
+			{ showUserModal && <ShowUser onClose={() => setShowUserModal(false)} data={selectedUser} />}
 			{ showAddUserModal && <AddUser departments={departments} sites={sites} onClose={() => setShowAddUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
 			{ showEditUserModal && <EditUser departments={departments} sites={sites} oldData={selectedUser} onClose={() => setShowEditUserModal(false)} onSave={() => getUsers()} showNotif={handleNotif} />}
 			{ showDeleteUserModal && <DeleteUser oldData={selectedItem} onClose={() => setShowDeleteitemModal(false)} onSave={() => getItems()} showNotif={handleNotif} />}
@@ -422,7 +442,7 @@ const Index = () => {
 					<button onClick={() => {setShowAddUserModal(true); getDepartments(); getSites();}} className="py-2 px-3 bg-blue-500 rounded font-semibold text-sm">Add User</button>
 					</div>
 					<div className="max-h-[400px] overflow-y-auto">
-					<Table columns={usersColumn} collection={users} withEdit={true} withDelete={true} editClick={(id) => handleEditUser(id)} deleteClick={(id) => handleDeleteItem(id)}/>
+					<Table columns={usersColumn} collection={users} withEdit={true} withDelete={true} editClick={(id) => handleEditUser(id)} deleteClick={(id) => handleDeleteUser(id)} withRowClick={true} onRowClick={(id) => userRowClick(id)}/>
 					</div>
 				{/* USERS */}
 

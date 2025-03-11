@@ -66,7 +66,7 @@ const EditUser = ({ oldData, onClose, onSave, showNotif, departments, sites } : 
 
                 {/* Header */}
                 <div className="p-4 font-bold text-lg border-b flex items-center justify-between h-14">
-                    <span>EDIT ITEM CATEGORY</span>
+                    <span>EDIT USER</span>
                     <div className="flex items-center text-lg leading-[18px] h-5 gap-x-2">
                         <button onClick={onClose}><IconRenderer name="close" className="w-5 h-5" /></button>
                     </div>
