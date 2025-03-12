@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import IconRenderer from '../components/icons';
 // import DatePicker from 'react-datepicker';
 // import 'react-datepicker/dist/react-datepicker.css';
-import { deleteRow, getAll, updateStatus } from '../services/issuedItemService';
+import { deleteRow, getAll, getById, updateStatus } from '../services/issuedItemService';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Table from '../components/Table';
 import Pagination from '../components/Pagination';
@@ -245,9 +245,16 @@ function Home() {
     // Show Modal
         const [show, setShow] = useState(false);
         const [showRow, setshowRow] = useState<Item>()
-        const handleRowClick = (row: Item) => {
+        const handleRowClick = async(id: number) => {
+            try {
+                const response = await getById(id);
+                setshowRow(response);
+                // console.log(response);
+            } catch (error) {
+                console.log(error);
+            }
             setShow(true);
-            setshowRow(row);
+            
         }
         const handleShowClose = () => {
             setShow(false);
@@ -257,7 +264,7 @@ function Home() {
 
 
 
-    // Update Status Modal
+    // #region Update Status Modal
         type UpdateStatusData = {
             id: number;
             status: string;
@@ -315,9 +322,13 @@ function Home() {
         const handleCloseUpdateStatusModal = () => {
             setShowUpdateStatusModal(false);
         }
-    // Update Status Modal
+    // #endregion
 
-    // Delete Modal
+
+
+
+
+    // #region Delete Modal
         const [showDeleteModal, setShowDeleteModal] = useState(false);
         const handleShowDeleteModal = () => {
             setShowDeleteModal(true);
@@ -334,7 +345,7 @@ function Home() {
                 console.log(error);
             }
         }
-    // Delete Modal
+    // #endregion
 
 
 

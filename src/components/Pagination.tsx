@@ -1,4 +1,4 @@
-import icons from './icons';
+import IconRenderer from './icons';
 
 function Pagination({
     page,
@@ -23,13 +23,6 @@ function Pagination({
     pageArray: number[];
     handlePageClick: (pageClicked: number) => void;
 }) {
-    
-    // Icon Renderer
-    const IconRenderer = ({ name, className }: {name: string; className: string}) => {
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null;
-    }
-    
 
     return (
         <>

@@ -42,8 +42,6 @@ function Header() {
         const getMe = async() => {
             try {
                 const response = await Me();
-                console.log(response);
-                
                 setMe(response.user);
             } catch (error) {
                 console.log(error);

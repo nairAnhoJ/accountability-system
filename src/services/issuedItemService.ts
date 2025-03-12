@@ -24,6 +24,19 @@ export const getAll = async() => {
     }
 };
 
+export const getById = async(id: number) => {
+    try {
+        const response = await config.get(`${baseURL}/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+};
+
 export const create = async(data: any) => {
     try {
         const response = await config.post(`${baseURL}/create`, data, {
