@@ -10,12 +10,14 @@ function Header() {
         id_number: string;
         name: string;
         email: string;
+        role: string;
     }
     const [me, setMe] = useState<Me >({
         'id': 0,
         'id_number': '',
         'name': '',
         'email': '',
+        'role': '',
     });
 
     const [showMenu, setShowMenu] = useState(false);
@@ -40,6 +42,8 @@ function Header() {
         const getMe = async() => {
             try {
                 const response = await Me();
+                console.log(response);
+                
                 setMe(response.user);
             } catch (error) {
                 console.log(error);
@@ -103,9 +107,14 @@ function Header() {
                                     </>
                                 }
                             </button>
-                            <Link to="/settings" onClick={() => setShowMenu(false)} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
-                                <IconRenderer name="settings" className='w-7 h-7' /> Settings
-                            </Link>
+                            {
+                                me.id === 1 && me.role === "admin" ?
+                                <Link to="/settings" onClick={() => setShowMenu(false)} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
+                                    <IconRenderer name="settings" className='w-7 h-7' /> Settings
+                                </Link>
+                                :
+                                ''
+                            }
                             <button onClick={handleLogout} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium'>
                                 <IconRenderer name="logout" className='w-7 h-7' /> Logout
                             </button>

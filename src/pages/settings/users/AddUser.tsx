@@ -73,7 +73,7 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
 
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-3">
-                    <div className="w-full flex items-center gap-x-3">
+                    <div className="w-full flex items-start gap-x-3">
                         {/* ID NUMBER */}
                         <div className="w-2/5">
                             <label className="block">ID Number</label>
@@ -99,7 +99,7 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
                         {/* EMPLOYEE NAME */}
                     </div>
 
-                    <div className="w-full flex items-center gap-x-3">
+                    <div className="w-full flex items-start gap-x-3">
                         {/* PHONE */}
                         <div className="w-2/5">
                             <label className="block">Phone</label>
@@ -125,7 +125,7 @@ const AddUser = ({ onClose, onSave, showNotif, departments, sites } : { onClose:
                         {/* EMAIL */}
                     </div>
 
-                    <div className="w-full flex items-center gap-x-3">
+                    <div className="w-full flex items-start gap-x-3">
                         {/* DEPARTMENT */}
                         <div className="w-1/2">
                             <label className="block">Department</label>

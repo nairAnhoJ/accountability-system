@@ -13,6 +13,7 @@ import IssuedItemsEdit from '../pages/issued-items/Edit'
 import Settings from '../pages/settings/Index'
 
 import RequireAuth from "./RequireAuth";
+import AdminAuth from "./AdminAuth";
 
 
 function AppRouter() {
@@ -29,9 +30,10 @@ function AppRouter() {
                     <Route path="/issued-items/add" element={<IssuedItemsAdd />} />
                     <Route path="/issued-items/edit" element={<IssuedItemsEdit />} />
 
-                    {/* SETTING */}
-                    <Route path='/settings' element={<Settings />} />
-
+                    <Route element={<AdminAuth />}>
+                        {/* SETTING */}
+                        <Route path='/settings' element={<Settings />} />
+                    </Route>
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />

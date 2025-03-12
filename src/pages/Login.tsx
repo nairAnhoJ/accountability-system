@@ -65,22 +65,25 @@ function Login() {
                         ) : null
                     }
                     <div className='relative pb-3'>
-                        <IconRenderer name={'user'} className={'absolute top-[11px] left-[9px] w-6 h-6'} />
-                        <input type="text" value={data.id_number} onChange={(e) => setData({...data, id_number: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-9' placeholder='ID Number' />
-                            {
-                                errors.find((err) => err.path == "id_number") ? (
-                                    <p className='text-red-500 text-sm font-semibold italic'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
-                                ) : null
-                            }
+                        <div className='absolute top-[11px] left-[9px] flex items-center gap-x-1'>
+                            <IconRenderer name={'user'} className={'w-6 h-6'} />
+                            <span className='font-semibold mt-[2px]'>HII -</span>
+                        </div>
+                        <input type="text" value={data.id_number} onChange={(e) => setData({...data, id_number: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-[70px]' placeholder='ID Number' />
+                        {
+                            errors.find((err) => err.path == "id_number") ? (
+                                <p className='text-red-500 text-sm font-semibold italic'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
+                            ) : null
+                        }
                     </div>
                     <div className='relative'>
                         <IconRenderer name={'password'} className={'absolute top-[11px] left-[9px] w-6 h-6'} />
                         <input type="password" value={data.password} onChange={(e) => setData({...data, password: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-9' placeholder='Password' />
-                            {
-                                errors.find((err) => err.path == "password") ? (
-                                    <p className='text-red-500 text-sm font-semibold italic'>{ errors.find((err) => err.path == "password")?.msg }</p>
-                                ) : null
-                            }
+                        {
+                            errors.find((err) => err.path == "password") ? (
+                                <p className='text-red-500 text-sm font-semibold italic'>{ errors.find((err) => err.path == "password")?.msg }</p>
+                            ) : null
+                        }
                     </div>
                     <div>
                         <button type='submit' className='w-full mt-5 border py-2 rounded font-bold text-white bg-blue-600 tracking-wider shadow-lg'>LOGIN</button>

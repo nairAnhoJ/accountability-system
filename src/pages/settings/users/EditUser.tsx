@@ -62,7 +62,7 @@ const EditUser = ({ oldData, onClose, onSave, showNotif, departments, sites } : 
 
     return (
         <div className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center z-[99] bg-gray-900/50 text-gray-600 dark:bg-gray-500/50 dark:text-gray-300">
-            <div className="bg-white dark:bg-gray-900 rounded w-[500px]">
+            <div className="bg-white dark:bg-gray-900 rounded w-[800px]">
 
                 {/* Header */}
                 <div className="p-4 font-bold text-lg border-b flex items-center justify-between h-14">
@@ -74,59 +74,59 @@ const EditUser = ({ oldData, onClose, onSave, showNotif, departments, sites } : 
 
                 {/* Body */}
                 <div className="p-4 border-b flex flex-col gap-y-3">
-                    <div className="w-full flex items-center gap-x-3">
+                    <div className="w-full flex items-start gap-x-3">
                         {/* ID NUMBER */}
                         <div className="w-2/5">
                             <label className="block">ID Number</label>
                             <input onChange={(e) => setData({...data, id_number: e.target.value})} value={data.id_number} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "id_number") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* ID NUMBER */}
 
                         {/* EMPLOYEE NAME */}
-                        <div className="w-full">
+                        <div className="w-3/5">
                             <label className="block">Name</label>
                             <input onChange={(e) => setData({...data, name: e.target.value})} value={data.name} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "name") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "name")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "name")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* EMPLOYEE NAME */}
                     </div>
 
-                    <div className="w-full flex items-center gap-x-3">
+                    <div className="w-full flex items-start gap-x-3">
                         {/* PHONE */}
                         <div className="w-2/5">
                             <label className="block">Phone</label>
                             <input onChange={(e) => setData({...data, phone: Number(e.target.value)})} value={data.phone} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "phone") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "phone")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "phone")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* PHONE */}
 
                         {/* EMAIL */}
-                        <div className="w-full">
+                        <div className="w-3/5">
                             <label className="block">Email</label>
                             <input onChange={(e) => setData({...data, email: e.target.value})} value={data.email} type="text" className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
                             {
                                 errors.find((err) => err.path == "email") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "email")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "email")?.msg }</p>
                                 ) : null
                             }
                         </div>
                         {/* EMAIL */}
                     </div>
 
-                    <div className="w-full flex items-center gap-x-3">
+                    <div className="w-full flex items-start gap-x-3">
                         {/* DEPARTMENT */}
                         <div className="w-full">
                             <label className="block">Department</label>
@@ -140,7 +140,7 @@ const EditUser = ({ oldData, onClose, onSave, showNotif, departments, sites } : 
                             </select>
                             {
                                 errors.find((err) => err.path == "department_id") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "department_id")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "department_id")?.msg }</p>
                                 ) : null
                             }
                         </div>
@@ -159,7 +159,7 @@ const EditUser = ({ oldData, onClose, onSave, showNotif, departments, sites } : 
                             </select>
                             {
                                 errors.find((err) => err.path == "site_id") ? (
-                                    <p className='text-red-500'>{ errors.find((err) => err.path == "site_id")?.msg }</p>
+                                    <p className='text-red-500 text-sm'>{ errors.find((err) => err.path == "site_id")?.msg }</p>
                                 ) : null
                             }
                         </div>
