@@ -242,14 +242,18 @@ function Home() {
     }
 
 
-    // Show Modal
+    // #region Show Modal
         const [show, setShow] = useState(false);
         const [showRow, setshowRow] = useState<Item>()
         const handleRowClick = async(id: number) => {
             try {
                 const response = await getById(id);
                 setshowRow(response);
-                // console.log(response);
+                setshowRow({...response, 
+                    issued_date: dateTimeFormatter.format(new Date(response.issued_date)),
+                    returned_date: dateTimeFormatter.format(new Date(response.returned_date))
+                })
+                
             } catch (error) {
                 console.log(error);
             }
@@ -259,7 +263,7 @@ function Home() {
         const handleShowClose = () => {
             setShow(false);
         }
-    // Show Modal
+    // #endregion
 
 
 
@@ -267,6 +271,8 @@ function Home() {
     // #region Update Status Modal
         type UpdateStatusData = {
             id: number;
+            iquantity: number;
+            quantity: number;
             status: string;
             received_by: string;
             returned_date: string;
@@ -274,51 +280,65 @@ function Home() {
         }
         const [updateStatusData, setUpdateStatusId] = useState<UpdateStatusData>({
             id: 0,
+            iquantity: 0,
+            quantity: 0,
             status: '',
             received_by: 'Ako',
             returned_date: '',
             remarks: ''
         });
         const [showUpdateStatusModal, setShowUpdateStatusModal] = useState(false)
+
         const handleShowUpdateStatus = (data: Item) => {
             setErrors([]);
-            setUpdateStatusId({...updateStatusData, id: data.id, status: data.status, remarks: data.remarks });
+            setUpdateStatusId({...updateStatusData, id: data.id, quantity: data.quantity, status: data.status, remarks: data.remarks });
             setShowUpdateStatusModal(true);
         }
+
         const handleUpdateStatus = async (data: UpdateStatusData) => {
             data.returned_date = data.returned_date.replace('T', ' ');
-            try {
-                const response = await updateStatus(data.id, data) as { data: any; status: number; response: any };
-                console.log(response);
-                if(response.status == 200){
-                    const newData = response.data.data;
-                    setCollection((prevItem) => 
-                        prevItem.map((item) => (
-                            item.id === newData.id ?
-                            {
-                                ...item,
-                                status: newData.status,
-                                received_by: newData.received_by,
-                                returned_date: dateTimeFormatter.format(new Date(newData.returned_date)),
-                                remarks: newData.remarks,
-                            }
-                            :
-                            item
-                        ))
-                    );
+            if(data.quantity > updateStatusData.quantity){ 
+                setErrors([
+                    {
+                        path: "quantity",
+                        msg: "Quantity must not exceed the issued quantity.",
+                    }
+                ]);
+            }else{
+                try {
+                    const response = await updateStatus(data.id, data) as { data: any; status: number; response: any };
+                    console.log(response);
+                    if(response.status == 200){
+                        const newData = response.data.data;
+                        setCollection((prevItem) => 
+                            prevItem.map((item) => (
+                                item.id === newData.id ?
+                                {
+                                    ...item,
+                                    status: newData.status,
+                                    received_by: newData.received_by,
+                                    returned_date: dateTimeFormatter.format(new Date(newData.returned_date)),
+                                    remarks: newData.remarks,
+                                }
+                                :
+                                item
+                            ))
+                        );
 
-                    setNotif(response.data.message);
-                    setShowUpdateStatusModal(false);
-                    setShow(false);
-                }
+                        setNotif(response.data.message);
+                        setShowUpdateStatusModal(false);
+                        setShow(false);
+                    }
 
-                if(response.status == 400){
-                    setErrors(response.response.data.errors);
+                    if(response.status == 400){
+                        setErrors(response.response.data.errors);
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
             }
         }
+
         const handleCloseUpdateStatusModal = () => {
             setShowUpdateStatusModal(false);
         }

@@ -1,28 +1,32 @@
 import { useState } from "react";
-import icons from "../../components/icons"
+import IconRenderer from "../../components/icons"
 
 interface Data {
     id: number;
     status: string;
     received_by: string;
     returned_date: string;
+    iquantity: number;
+    quantity: number;
     remarks: string;
 }
 
-const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton, errors}: { data: Data; updateStatusCloseButton: () => void; yesUpdateStatusButton: (statusUpdateData: Data) => void; errors: any }) => {
+interface Errors {
+    path: string;
+    msg: string;
+}
 
-    const IconRenderer = ({name, className}: {name: string; className?: string}) => {
-        const Icon = icons[name as keyof typeof icons];
-        return Icon ? <Icon className={className} /> : null;
-    }
+const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton, errors}: { data: Data; updateStatusCloseButton: () => void; yesUpdateStatusButton: (statusUpdateData: Data) => void; errors: Errors[] }) => {
 
     const currentDateTime = new Date();
     currentDateTime.setHours(currentDateTime.getHours() + 8);
     const [statusUpdateData, setStatusUpdateData] = useState<Data>({
         id: data.id,
-        status: 'Returned',
-        received_by: 'Ako',
+        status: 'Replaced',
+        received_by: '',
         returned_date: currentDateTime.toISOString().slice(0, 16),
+        iquantity: data.quantity,
+        quantity: data.quantity,
         remarks: data.remarks ? data.remarks : ""
     })
 
@@ -42,6 +46,7 @@ const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton, err
                         <label className="block text-sm">Status <span className="text-red-500">*</span></label>
                         <select onChange={(e) => setStatusUpdateData({...statusUpdateData, status: e.target.value})} className="border text-center w-1/2 h-9 rounded border-gray-300 dark:bg-gray-100 dark:text-gray-600">
                             {/* <option value="Issued">Issued</option> */}
+                            <option value="Replaced">Replace</option>
                             <option value="Returned">Returned</option>
                             <option value="Lost">Lost</option>
                         </select>
@@ -51,11 +56,22 @@ const UpdateStatus = ({data, updateStatusCloseButton, yesUpdateStatusButton, err
                         <input type="text" value={statusUpdateData.received_by} onChange={(e) => setStatusUpdateData({...statusUpdateData, received_by: e.target.value})} className="w-full border px-3 py-1 rounded border-gray-300"/>
                     </div> */}
                     <div className="mb-3">
-                        <label className="block text-sm">Returned Date / Reported Date (<span className="italic">If lost</span>)</label>
+                        <label className="block text-sm">Replaced Date / Returned Date / Reported Date (<span className="italic">If lost</span>)</label>
                         <input type="datetime-local" value={statusUpdateData.returned_date} onChange={(e) => setStatusUpdateData({...statusUpdateData, returned_date: e.target.value})} className="w-full border px-3 h-9 rounded border-gray-300 dark:bg-gray-100 dark:text-gray-600"/>
                         {
                             errors && errors.find((err: any) => err.path == "returned_date") ? (
                                 <p className='text-red-500'>{ errors.find((err: any) => err.path == "returned_date")?.msg }</p>
+                            ) : null
+                        }
+                    </div>
+
+                    {/* Quantity */}
+                    <div className='flex flex-col font-semibold mb-3 text-sm w-full'>
+                        <label>Quantity</label>
+                        <input onChange={(e) => {setStatusUpdateData({...statusUpdateData, quantity: Number(e.target.value)})}} value={statusUpdateData.quantity} type="number" min={1} className='w-full px-2 h-10 rounded border border-gray-400 dark:bg-gray-100 dark:text-gray-600 dark:disabled:bg-gray-400'/>
+                        {
+                            errors.find((err: any) => err.path == "quantity") ? (
+                                <p className='text-red-500'>{ errors.find((err: any) => err.path == "quantity")?.msg }</p>
                             ) : null
                         }
                     </div>

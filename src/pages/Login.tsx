@@ -51,8 +51,6 @@ function Login() {
 
     return (
         <>
-
-
             <div className='w-screen h-screen flex items-center justify-center bg-gray-200'>
                 <form onSubmit={handleSubmit} className='bg-white rounded w-[400px] p-6 text-gray-600 shadow-xl'>
                     <h1 className='text-center text-3xl font-semibold pb-6'>Accountability System</h1>
@@ -69,7 +67,7 @@ function Login() {
                             <IconRenderer name={'user'} className={'w-6 h-6'} />
                             <span className='font-semibold mt-[2px]'>HII -</span>
                         </div>
-                        <input type="text" value={data.id_number} onChange={(e) => setData({...data, id_number: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-[70px]' placeholder='ID Number' />
+                        <input type="text" value={data.id_number} onChange={(e) => setData({...data, id_number: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-[70px] font-semibold text-gray-600' placeholder='ID Number' />
                         {
                             errors.find((err) => err.path == "id_number") ? (
                                 <p className='text-red-500 text-sm font-semibold italic'>{ errors.find((err) => err.path == "id_number")?.msg }</p>
@@ -78,7 +76,7 @@ function Login() {
                     </div>
                     <div className='relative'>
                         <IconRenderer name={'password'} className={'absolute top-[11px] left-[9px] w-6 h-6'} />
-                        <input type="password" value={data.password} onChange={(e) => setData({...data, password: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-9' placeholder='Password' />
+                        <input type="password" value={data.password} onChange={(e) => setData({...data, password: e.target.value})} className='border w-full pb-2 pt-3 rounded border-gray-300 pl-9 font-semibold text-gray-600' placeholder='Password' />
                         {
                             errors.find((err) => err.path == "password") ? (
                                 <p className='text-red-500 text-sm font-semibold italic'>{ errors.find((err) => err.path == "password")?.msg }</p>
