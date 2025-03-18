@@ -9,6 +9,7 @@ import Pagination from '../components/Pagination';
 import Show from './issued-items/Show';
 import UpdateStatus from './issued-items/UpdateStatus'
 import Delete from './issued-items/Delete';
+import Loading from '../components/Loading';
 
 function Home() {
     const navigate = useNavigate();
@@ -39,7 +40,8 @@ function Home() {
     const [pageCount, setPageCount] = useState(1);
     const [perPage, setPerPage] = useState(25);
     const [pageArray, setPageArray] = useState<number[] >([]);
-    const [notif, setNotif] = useState<string >(location.state?.message)
+    const [notif, setNotif] = useState<string >(location.state?.message);
+    const [loading, setLoading] = useState<boolean>(true);
     
     const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {dateStyle: 'medium', timeStyle: 'short'});
 
@@ -102,6 +104,7 @@ function Home() {
             }
 
             updateDateFormat();
+            setLoading(false);
         } catch (error) {
             console.log(error);
         }
@@ -309,21 +312,23 @@ function Home() {
                     const response = await updateStatus(data.id, data) as { data: any; status: number; response: any };
                     console.log(response);
                     if(response.status == 200){
-                        const newData = response.data.data;
-                        setCollection((prevItem) => 
-                            prevItem.map((item) => (
-                                item.id === newData.id ?
-                                {
-                                    ...item,
-                                    status: newData.status,
-                                    received_by: newData.received_by,
-                                    returned_date: dateTimeFormatter.format(new Date(newData.returned_date)),
-                                    remarks: newData.remarks,
-                                }
-                                :
-                                item
-                            ))
-                        );
+                        setLoading(true);
+                        getCollection();
+                        // const newData = response.data.data;
+                        // setCollection((prevItem) => 
+                        //     prevItem.map((item) => (
+                        //         item.id === newData.id ?
+                        //         {
+                        //             ...item,
+                        //             status: newData.status,
+                        //             received_by: newData.received_by,
+                        //             returned_date: dateTimeFormatter.format(new Date(newData.returned_date)),
+                        //             remarks: newData.remarks,
+                        //         }
+                        //         :
+                        //         item
+                        //     ))
+                        // );
 
                         setNotif(response.data.message);
                         setShowUpdateStatusModal(false);
@@ -357,7 +362,9 @@ function Home() {
             try {
                 const id = showRow?.id;
                 const response = await deleteRow(id) as { data:any; };
-                setCollection((prevCollection) => prevCollection.filter(item => item.id !== id));
+                setLoading(true);
+                getCollection();
+                // setCollection((prevCollection) => prevCollection.filter(item => item.id !== id));
                 setNotif(response.data.message);
                 setShowDeleteModal(false);
                 setShow(false);
@@ -373,7 +380,7 @@ function Home() {
 
 
 
-    // Table Columns
+    // #region Table Columns
     type Columns = {
         key: keyof Item;
         label: string;
@@ -388,19 +395,19 @@ function Home() {
         { key: 'status', label: 'Status', className: 'text-center' },
         { key: 'issued_date', label: 'Date of Issuance', className: 'text-center' },
     ]
-    // Table Columns
+    // #endregion
 
 
 
 
 
-    // Errors
+    // #region Errors
     type Errors = {
         path: string;
         msg: string;
     }
     const [errors, setErrors] = useState<Errors[]>([]);
-    // Errors
+    // #endregion
 
 
     // FILTER
@@ -432,6 +439,8 @@ function Home() {
 
     return (
         <>
+            { loading && <Loading /> }
+
             { show && showRow && <Show data={showRow} showCloseButton={handleShowClose} updateStatusButton={handleShowUpdateStatus} showDeleteButton={handleShowDeleteModal}/> }
             { showUpdateStatusModal && updateStatusData.id != 0 && <UpdateStatus data={updateStatusData} yesUpdateStatusButton={handleUpdateStatus} updateStatusCloseButton={handleCloseUpdateStatusModal} errors={errors}/>}
             { showDeleteModal && <Delete deleteButton={handleDelete} deleteCloseButton={() => setShowDeleteModal(!showDeleteModal)} /> }
