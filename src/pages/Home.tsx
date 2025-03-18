@@ -43,8 +43,10 @@ function Home() {
     const [notif, setNotif] = useState<string >(location.state?.message);
     const [loading, setLoading] = useState<boolean>(true);
     
+    // Date and Time Formatter
     const dateTimeFormatter = new Intl.DateTimeFormat("en-US", {dateStyle: 'medium', timeStyle: 'short'});
 
+    // Update Date and Time Format
     const updateDateFormat = () => {
         setCollection((prevItem) => 
             prevItem.map((item) => (
@@ -57,14 +59,10 @@ function Home() {
         );
     };
 
+    // Get Item Collection
     const getCollection = async() => {
         try {
             const response = await getAll() as {status : number; search: string; sort: string; pagination: any; collection: any;};
-            
-            // if(response.status == 403){
-            //     localStorage.removeItem("token");
-            //     window.location.href = "/login";
-            // }
             setSearch(response.search);
             setSort(response.sort);
             setPage(response.pagination.page);

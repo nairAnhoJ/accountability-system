@@ -14,6 +14,8 @@ import Settings from '../pages/settings/Index'
 
 import RequireAuth from "./RequireAuth";
 import AdminAuth from "./AdminAuth";
+import ChangePassword from "../pages/ChangePassword";
+import RequireAuthOnly from "./RequireAuthOnly";
 
 
 function AppRouter() {
@@ -35,6 +37,10 @@ function AppRouter() {
                         <Route path='/settings' element={<Settings />} />
                     </Route>
                 </Route>
+                
+                <Route element={<RequireAuthOnly />}>
+                    <Route path="/change-password" element={<ChangePassword />} />
+                </Route>
 
                 <Route path="*" element={<NotFoundPage />} />
             </Routes>
@@ -45,7 +51,7 @@ function AppRouter() {
 const HeaderWrapper = () => {
     const token = localStorage.getItem("token");
     const path = useLocation();
-    const hideHeaderRoutes = ['/', '', '/issued-items/add', '/issued-items/edit', '/settings'];
+    const hideHeaderRoutes = ['/', '', '/issued-items/add', '/issued-items/edit', '/settings', '/settings'];
 
     if(hideHeaderRoutes.includes(path.pathname) && token){
         return <Header />
