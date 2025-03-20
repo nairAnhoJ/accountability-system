@@ -60,7 +60,7 @@ Enter your ID number and password, then click **'Login'**.
 #### **2. First Time Login**
 If this is your first time logging on, you will be required to change your password.
 - Fill in all the required fields.
-- Click **'Submit'**.
+- Click **'Update'**.
 ![Change Password Page](docs/images/change-password.png)
 
 #### **3. Viewing Issued Items**
