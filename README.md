@@ -57,11 +57,17 @@ Enter your ID number and password, then click **'Login'**.
 
 ![Login Page](docs/images/login.png)
 
-#### **2. Viewing Issued Items**
-After logging in, you will see a list of all issued items.
+#### **2. First Time Login**
+If this is your first time logging on, you will be required to change your password.
+- Fill in all the required fields.
+- Click **'Submit'**.
+![Change Password Page](docs/images/change-password.png)
+
+#### **3. Viewing Issued Items**
+Once logged in, you will see a list of all issued items.
 ![Issued Item List](docs/images/issued-item.png)
 
-#### **3. Issuing a New Item**
+#### **4. Issuing a New Item**
 - Click the **'Issue Item/s'** button to open the issue items form.
 - Fill in the necessary details.
 - Click **'Submit'**.
@@ -74,15 +80,15 @@ After logging in, you will see a list of all issued items.
 - Click **'Submit'**.
 
 
-#### **4. Viewing Item Details**
+#### **5. Viewing Item Details**
 - In the **Issued Items List**, click on a row to see more details.
 
 ![Issued Item More Details](docs/images/issued-item-more-details.png)
 
 
-#### **5. Updating an Item's Status**
+#### **6. Updating an Item's Status**
 - In the modal, click the **'Update Status'** button.
-- Change the item's status from **'Issued'** to either **'Returned'** or **'Lost'**.
+- Change the item's status from **'Issued'** to either **'Returned'**, **Replaced** or **'Lost'**.
 - Fill in the form, then click **'Update'**.
 
 ![Issued Item Update Status](docs/images/issued-item-update-status.png)

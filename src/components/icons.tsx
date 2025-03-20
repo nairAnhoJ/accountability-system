@@ -18,6 +18,7 @@ import IconEdit from './icons/IconEdit'
 import IconWarning from './icons/IconWarning';
 import IconLogout from './icons/IconLogout';
 import IconDownArrow from './icons/IconDownArrow';
+import IconKey from './icons/IconKey';
 
 const icons = {
     add: IconAdd,
@@ -39,7 +40,8 @@ const icons = {
     edit: IconEdit,
     warning: IconWarning,
     logout: IconLogout,
-    downArrow: IconDownArrow
+    downArrow: IconDownArrow,
+    key: IconKey
 } as const;
 
 type IconName = keyof typeof icons;

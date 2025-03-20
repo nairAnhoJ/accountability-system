@@ -1,21 +1,63 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IconRenderer from "../components/icons"
+import { Me, ChangePassword as userChangePassword } from "../services/authService";
 
 
 
 const ChangePassword = () => {
+
+    // #region
+        type Me = {
+            id: number;
+            id_number: string;
+            name: string;
+            email: string;
+            role: string;
+            first_time_login: number;
+        }
+
+        const [me, setMe] = useState<Me >({
+            'id': 0,
+            'id_number': '',
+            'name': '',
+            'email': '',
+            'role': '',
+            'first_time_login': 0
+        });
+
+        useEffect(() => {
+            const getMe = async() => {
+                try {
+                    const response = await Me();
+                    setMe(response.user);
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            getMe();
+        }, [])
+
+    // #endregion
+
     const [data, setData] = useState({
         password: '',
         password_confirmation: ''
     })
-
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if(data.password && data.password_confirmation){
             if(data.password === data.password_confirmation){
-    
+                try {
+                    const response = await userChangePassword(me.id, data) as { data: any; status: number; response: any };
+                    console.log(response);
+                    if(response.status === 200){
+                        window.location.href = "/";
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }else{
                 setErrors([{
                     path: 'password_confirmation',
@@ -78,7 +120,10 @@ const ChangePassword = () => {
                         }
                     </div>
                     <div>
-                        <button type='submit' className='w-full mt-5 border py-2 rounded font-bold text-white bg-blue-600 tracking-wider shadow-lg'>UPDATE</button>
+                        <button type='submit' className='w-full mt-5 border py-2 rounded font-bold text-white bg-blue-600  tracking-wider shadow-lg'>UPDATE</button>
+                        {
+                            me.first_time_login === 0 && <button type='button' onClick={() => window.location.href = "/"} className='w-full mt-2 border py-2 rounded font-bold text-white bg-gray-500 tracking-wider shadow-lg'>BACK</button>
+                        }
                     </div>
                 </form>
             </div>

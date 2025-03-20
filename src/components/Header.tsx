@@ -113,6 +113,9 @@ function Header() {
                                 :
                                 ''
                             }
+                            <button onClick={() => window.location.href = "/change-password"} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium border-b dark:border-gray-600'>
+                                <IconRenderer name="key" className='w-7 h-7' /> Change Password
+                            </button>
                             <button onClick={handleLogout} className='h-12 w-full hover:bg-gray-100 dark:hover:bg-gray-700 px-3 flex items-center gap-x-2 font-medium'>
                                 <IconRenderer name="logout" className='w-7 h-7' /> Logout
                             </button>

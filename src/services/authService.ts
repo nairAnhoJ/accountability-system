@@ -36,3 +36,16 @@ export const Me = async() => {
         return error;
     }
 }
+
+export const ChangePassword = async(id: number, data: { password: string; password_confirmation: string }) => {
+    try {
+        const response = await axios.post(`${baseURL}/change-password/${id}`, data, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response;
+    } catch (error) {
+        return error;
+    }
+};
