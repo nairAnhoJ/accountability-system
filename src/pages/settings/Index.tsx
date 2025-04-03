@@ -33,6 +33,9 @@ const Index = () => {
 		const [notifMessage, setNotifMessage] = useState<string>('');
 	// #endregion
 
+	console.log('test');
+	
+
 	// Handle Notification
 	const handleNotif = (message: string) => {
 		setNotifIsVisible(true);
@@ -125,7 +128,8 @@ const Index = () => {
 
 
 
-	// #rgion ~ ITEMS ~
+
+	// #region ~ ITEMS ~
 
 		// #region ~ TYPES ~
 
@@ -372,6 +376,7 @@ const Index = () => {
 			
 
 	// #endregion
+
 
 
 	useEffect(() => {

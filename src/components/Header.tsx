@@ -79,11 +79,7 @@ function Header() {
                 <button onClick={handleHomeButton} className='text-gray-600 font-bold text-xl dark:text-white tracking-wide'>Accountability System</button>
 
                 <button onClick={handleMenuButton} className='font-semibold text-gray-600 dark:text-white text-xl relative'>
-                    <div className='bg-gray-500 dark:bg-white w-4 h-4 rounded-full absolute right-0 bottom-0 translate-x-1/2 border-2 border-white dark:border-gray-800'>
-                        {IconRenderer({
-                            name:"downArrow",
-                            className:'dark:text-gray-700 text-white w-[14px] h-[14px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-                        }) }
+                    <div className='bg-gray-500 dark:bg-white w-4 h-4 rounded-full absolute -right-1 bottom-0 translate-x-1/2 border-2 border-white dark:border-gray-800'>
                         <IconRenderer name="downArrow" className='dark:text-gray-700 text-white w-[14px] h-[14px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' />
                     </div>
                     {me.name}

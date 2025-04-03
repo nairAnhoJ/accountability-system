@@ -50,6 +50,7 @@ function AppRouter() {
 
 const HeaderWrapper = () => {
     const token = localStorage.getItem("token");
+    
     const path = useLocation();
     const hideHeaderRoutes = ['/', '', '/issued-items/add', '/issued-items/edit', '/settings', '/settings'];
 
