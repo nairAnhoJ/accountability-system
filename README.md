@@ -25,25 +25,20 @@ cd accountability-system
 npm install
 ~~~
 
-3. Set up environment variables
-~~~
-cp .env.example .env
-# Update the environment variables as needed.
-~~~
-
-4. Start the development server
+3. Start the development server
 ~~~
 npm run dev
 ~~~
 
-5. Build for production (optional)
+4. Build for production (optional)
 ~~~
 npm run build
 ~~~
 
-6. Run the production build
+5. Run the production build
 ~~~
-npm run preview
+serve -s dist -l <PORT> --single
+#Replace <PORT> with the port number you want to use.
 ~~~
 
 <br/>
